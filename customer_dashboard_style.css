@@ -1,0 +1,178 @@
+/* Reset & General Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to bottom right, #007bff, #6c63ff);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.dashboard-container {
+    background: #ffffff;
+    width: 80%;
+    max-width: 900px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+button {
+    width: 15%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Title */
+h1 {
+    font-size: 30px;
+    margin-bottom: 20px;
+    color: #4a4a4a;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+/* Dashboard Sections */
+.options {
+    margin-top: 20px;
+}
+
+.options h2 {
+    font-size: 24px;
+    color: #007bff;
+    margin: 20px 0 10px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #007bff;
+}
+
+/* Adding border around entire sections like 'Manage Profile', 'Booking Classes' */
+.options-section {
+    border: 2px solid #ddd;   /* Border around the whole section */
+    padding: 20px;             /* Adding padding to each section */
+    margin-bottom: 30px;       /* Margin to separate sections more clearly */
+    border-radius: 10px;       /* Rounded corners for the sections */
+    background-color: #f9f9f9; /* Light background color for sections */
+}
+
+.options-section h2 {
+    margin-top: 0;             /* Remove margin from the top of the section heading */
+}
+
+/* List Style */
+.options ul {
+    list-style: none;
+    padding: 0;
+}
+
+.options ul li {
+    margin: 10px 0;
+}
+
+.options ul li a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #555;
+    display: block;
+    padding: 12px;
+    border: 1px solid #ddd;   /* Border around each link */
+    border-radius: 6px;
+    background-color: #ffffff;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.options ul li a:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* Links Style */
+.options a {
+    font-weight: 600;
+}
+
+/* Footer Link */
+p a {
+    color: #007bff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+p a:hover {
+    color: #0056b3;
+}
+
+.logout-btn {
+    position: fixed; /* Fixed position to always stay at top-right */
+    top: 20px;
+    right: 20px;
+}
+
+.logout-btn a {
+    background-color: #f44336; /* Red background for log out button */
+    color: #f44336;;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.logout-btn a:hover {
+    background-color: #e53935; /* Darker red when hovered */
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-container {
+        width: 100%;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    .options h2 {
+        font-size: 22px;
+    }
+
+    .options ul li a {
+        font-size: 16px;
+    }
+}

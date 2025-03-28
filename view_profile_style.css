@@ -1,0 +1,142 @@
+/* Reset & General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to bottom right, #007bff, #6c63ff);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    background: #ffffff;
+    width: 450px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Title */
+h1 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #4a4a4a;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+/* Profile Information */
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.profile-info p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: 600;
+    width: 100%;
+}
+
+.profile-info label {
+    font-weight: bold;
+    color: #007bff;
+    margin-right: 10px;
+}
+
+.profile-info span {
+    font-weight: normal;
+    color: #333;
+}
+
+/* Profile Details in One Line (Inline) */
+.profile-info p {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px; /* Space between label and value */
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.profile-info label {
+    font-weight: bold;
+    color: #007bff;
+    width: 120px; /* Align labels in one column */
+}
+
+.profile-info span {
+    font-weight: normal;
+    color: #333;
+    flex-grow: 1; /* Ensure the value spans the remaining space */
+}
+
+/* Back to Dashboard Link */
+a {
+    font-size: 16px;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+.back-link {
+    display: flex; /* Enables Flexbox */
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    margin-top: 20px; /* Adds space above the link */
+    height: 50px; /* Ensures a fixed height for vertical alignment */
+}
+
+
+
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .container {
+        width: 100%;
+        padding: 20px;
+        margin: 10px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    .profile-info p {
+        font-size: 16px;
+    }
+
+    a {
+        font-size: 14px;
+    }
+}

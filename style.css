@@ -1,0 +1,1516 @@
+/* ===========================================================
+   FitZone Fitness Center - Main Stylesheet
+   Description: Complete CSS styles for FitZone homepage sections and components.
+   Author: FitZone Web Team
+   Date: 2025-03-25
+   =========================================================== */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700&display=swap');
+
+/* ====================================================== 
+   Theme Color Scheme and Fonts:
+   Background: #1B1B1B (dark background)
+   Light Text: #F2F2F2 (light text color on dark background)
+   Primary Color: #00B78E (bright accent for highlights and buttons)
+   Secondary Color: #004C3F (dark green accent for hovers and accents)
+   Fonts: Headings use 'Montserrat', Body text uses 'Lato'.
+   ====================================================== */
+:root {
+    --background-color: #1B1B1B;
+    --text-color: #F2F2F2;
+    --primary-color: #00B78E;
+    --secondary-color: #004C3F;
+}
+
+/* Global Resets and Base Styles */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    -webkit-transition: color 0.3s ease;
+    -moz-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
+    transition: color 0.3s ease;
+}
+a:hover {
+    color: var(--secondary-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-color);
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 0.5em;
+    font-weight: 700;
+}
+
+p {
+    margin-bottom: 1em;
+    font-family: 'Poppins', sans-serif;
+}
+
+ul {
+    list-style: none;
+}
+
+/* Customize text selection highlight */
+::selection {
+    background: var(--primary-color);
+    color: var(--background-color);
+}
+
+/* Container for fixed width layout */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Typography and general element styling */
+.text-center {
+    text-align: center;
+}
+
+.text-light {
+    color: var(--text-color);
+}
+
+.text-primary {
+    color: var(--primary-color);
+}
+
+
+
+/* ====================================================== 
+   Navbar Styles - Site navigation bar with logo and menu links.
+   Includes responsive hamburger menu toggle for mobile devices.
+   ====================================================== */
+.navbar {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 20px 30px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.navbar .logo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.navbar .menu {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .menu li {
+    margin-left: 30px;
+}
+
+.navbar .menu li a {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    padding: 5px 0;
+}
+.navbar .menu li a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-color);
+    -webkit-transition: width 0.3s;
+    -moz-transition: width 0.3s;
+    -o-transition: width 0.3s;
+    transition: width 0.3s;
+}
+.navbar .menu li a:hover::after {
+    width: 100%;
+}
+
+.navbar .toggle {
+    display: none;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-justify-content: space-around;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    width: 30px;
+    height: 22px;
+    cursor: pointer;
+}
+.navbar .toggle span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: var(--text-color);
+    border-radius: 2px;
+    -webkit-transition: transform 0.3s ease, opacity 0.3s ease;
+    -moz-transition: transform 0.3s ease, opacity 0.3s ease;
+    -o-transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.navbar .toggle.active span:nth-child(1) {
+    -ms-transform: rotate(45deg) translate(5px, 5px);
+    -webkit-transform: rotate(45deg) translate(5px, 5px);
+    transform: rotate(45deg) translate(5px, 5px);
+}
+.navbar .toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+.navbar .toggle.active span:nth-child(3) {
+    -ms-transform: rotate(-45deg) translate(6px, -6px);
+    -webkit-transform: rotate(-45deg) translate(6px, -6px);
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+.navbar.scrolled {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #00B78E; /* 👈 New background when scrolled */
+    color: #1B1B1B;            /* 👈 Text fallback (used for logo if needed) */
+    padding: 10px 30px; /* 👈 Shrinks height */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar.scrolled .menu li a {
+    color: #1B1B1B; /* Dark text for white background */
+}
+
+.navbar.scrolled .menu li a::after {
+    background: var(--secondary-color);
+}
+
+.navbar.scrolled .toggle span {
+    background: #1B1B1B;
+}
+
+.navbar.scrolled .logo {
+    font-size: 1.6rem;
+    color: #1B1B1B; /* dark text on bright scroll bg */
+}
+/* Responsive styles for mobile devices*/
+@media (max-width: 768px) {
+    .navbar {
+      flex-wrap: wrap;
+      padding: 15px 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: var(--background-color);
+    }
+  
+    .navbar .menu {
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      background-color: var(--background-color);
+      position: absolute;
+      top: 100%;
+      left: 0;
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 20px;
+      transition: all 0.3s ease;
+      z-index: 999;
+      border-bottom: 1px solid #333;
+    }
+  
+    .navbar .menu.open {
+      opacity: 1;
+      max-height: 500px;
+      padding: 15px 20px;
+    }
+  
+    .navbar .menu li {
+      margin: 10px 0;
+    }
+  
+    .navbar .menu li a {
+      font-size: 1rem;
+      color: var(--text-color);
+    }
+  
+    .navbar .toggle {
+      display: flex !important;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 30px;
+      height: 22px;
+      cursor: pointer;
+      z-index: 1001;
+      position: relative;
+    }
+  
+    .navbar .toggle span {
+      height: 3px;
+      background: var(--text-color);
+      border-radius: 2px;
+      transition: 0.3s ease;
+    }
+  
+    .navbar .toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+  
+    .navbar .toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+  
+    .navbar .toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+    .navbar.scrolled .menu li a {
+        color: var(--text-color) !important; /* Ensures mobile menu uses --text-color on scroll */
+    }
+    
+    .navbar.scrolled .logo {
+        color: var(--text-color); /* Optional: logo matches the menu text in scroll */
+    }
+    
+    .navbar.scrolled .toggle span {
+        background: var(--text-color); /* Keeps toggle icon consistent in scroll */
+    }
+}
+  
+  
+
+/* ====================================================== 
+   Hero Section - Full-width banner with background image and overlay.
+   Contains site title, tagline, and primary call-to-action button.
+   ====================================================== */
+   .hero-slider {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.hero-slider .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    animation: fadeSlide 12s infinite;
+    opacity: 0;
+    z-index: 0;
+}
+
+.hero-slider .slide1 {
+    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('./images/hero/gymhero-1.jpg');
+    animation-delay: 0s;
+}
+
+.hero-slider .slide2 {
+    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('./images/hero/new.jpg');
+    animation-delay: 6s;
+}
+
+@keyframes fadeSlide {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    45% { opacity: 1; }
+    55% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+.hero-slider .hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    color: var(--text-color);
+    max-width: 700px;
+    width: 100%;
+    
+}
+
+.hero-slider .hero-content h1 {
+    font-size: 3.5rem;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.hero-slider .hero-content p {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 30px;
+    font-family: 'Lato', sans-serif;
+}
+
+.hero-slider .hero-content .btn.cta-button {
+    background-color: var(--primary-color);
+    color: #1B1B1B;
+    font-weight: 700;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.hero-slider .hero-content .btn.cta-button:hover {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+
+/* Scroll-down bounce stays the same */
+.hero-slider .scroll-down {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 2rem;
+    color: var(--text-color);
+    cursor: pointer;
+    animation: bounce 2s infinite;
+}
+.hero-slider .scroll-down::after {
+    content: '\25BC';
+}
+
+@keyframes bounce {
+    0%, 20%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(10px); }
+    60% { transform: translateY(5px); }
+}
+/* mobile responsive hero */
+@media (max-width: 768px) {
+    .hero-slider .hero-content {
+      padding: 100px 20px 0;
+      text-align: center;
+      margin: 0 auto;
+      max-width: 90%;
+    }
+  
+    .hero-slider .hero-content h1 {
+      font-size: 2.2rem;
+      line-height: 1.3;
+    }
+  
+    .hero-slider .hero-content p {
+      font-size: 1rem;
+      margin-bottom: 25px;
+    }
+  
+    .hero-slider .btn.cta-button {
+      padding: 0.6rem 1.5rem;
+      font-size: 0.95rem;
+    }
+  
+    .hero-slider .scroll-down {
+      font-size: 1.5rem;
+      bottom: 15px;
+    }
+  
+    .hero-slider .slide {
+      background-position: center top;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .hero-slider .hero-content h1 {
+      font-size: 1.7rem;
+    }
+  
+    .hero-slider .hero-content p {
+      font-size: 0.9rem;
+    }
+  
+    .hero-slider .btn.cta-button {
+      font-size: 0.85rem;
+      padding: 0.5rem 1.2rem;
+    }
+  
+    .hero-slider .scroll-down {
+      font-size: 1.2rem;
+    }
+    .hero-slider .hero-content h1,
+    .hero-slider .hero-content p,
+    .hero-slider .btn.cta-button {
+        transition: all 0.3s ease-in-out;
+    }
+
+  }
+  
+
+/* ====================================================== 
+   About Section - Introduction about the fitness center.
+   Typically includes an image and descriptive text side by side.
+   ====================================================== */
+.about-section {
+    padding: 60px 0;
+}
+.about-section .container {
+    display: -ms-grid;
+    display: -webkit-grid;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 2rem;
+    align-items: center;
+}
+.about-section .about-image {
+    text-align: center;
+}
+.about-section .about-image img {
+    width: 80%;
+    border-radius: 10px;
+}
+.about-section .about-content {
+    color: var(--text-color);
+}
+.about-section .about-content h2 {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    text-align: left;
+    position: relative;
+}
+.about-section .about-content h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 50px;
+    height: 3px;
+    background: var(--primary-color);
+}
+.about-section .about-content p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+.about-section .about-content .btn.cta-button {
+    background-color: var(--primary-color);
+    color: #1B1B1B;
+    font-weight: 700;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.about-section .btn.cta-button:hover {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+@media (min-width: 768px) {
+    .about-section .container {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+
+/* ====================================================== 
+   Classes Section - Overview of available fitness classes.
+   Displayed as cards (image, title, description) in a responsive grid.
+   ====================================================== */
+.classes-section {
+    padding: 60px 0;
+}
+.classes-section h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    position: relative;
+}
+.classes-section h2::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    bottom: -10px;
+    width: 80px;
+    height: 3px;
+    background: var(--primary-color);
+}
+.classes-grid {
+    display: -ms-grid;
+    display: -webkit-grid;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 2rem;
+}
+.class-card {
+    background: #262626;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    border: 2px solid transparent; /* default border for transition effect */
+    transition: border 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    -webkit-transition: transform 0.3s ease, box-shadow 0.3s ease;
+    -moz-transition: transform 0.3s ease, box-shadow 0.3s ease;
+    -o-transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.class-card:hover {
+    border-color: var(--primary-color); /* change to primary color on hover */
+    cursor: pointer;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    -webkit-transform: translateY(-5px);
+    -ms-transform: translateY(-5px);
+    transform: translateY(-5px);
+    -moz-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+.class-card img {
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+    -webkit-transition: transform 0.3s ease, filter 0.3s ease;
+    -moz-transition: transform 0.3s ease, filter 0.3s ease;
+    -o-transition: transform 0.3s ease, filter 0.3s ease;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+.class-card:hover img {
+    -webkit-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    transform: scale(1.05);
+    -webkit-filter: brightness(1.1);
+    filter: brightness(1.1);
+}
+.class-card h3 {
+    font-size: 1.6rem;
+    margin: 15px 0 10px;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--primary-color);
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    transition: color 0.3s ease;
+}
+.class-card:hover h3 {
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+.class-card p {
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+}
+.class-card:hover p {
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+.class-card .btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 1.5rem;
+}
+.classes-grid .cta-button {
+    grid-column: 1 / -1; /* span across full width */
+    justify-self: center;
+    align-self: center;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    background-color: var(--primary-color);
+    color: #1B1B1B;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.classes-grid .cta-button:hover {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+.classes-grid .cta-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+@media (min-width: 768px) {
+    .classes-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .classes-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+/* ====================================================== 
+   Trainers Section - Showcases trainer profiles.
+   Includes trainer photo, name, title, and social media links.
+   ====================================================== */
+.trainers-section {
+    padding: 60px 0;
+}
+.trainers-section h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+}
+.trainers-list {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    gap: 2rem;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.trainer-card {
+    background: #262626;
+    padding: 25px;
+    border: 2px solid transparent; /* set default border */
+    border-radius: 8px;
+    text-align: center;
+    width: 320px;
+    position: relative;
+    overflow: hidden;
+    transition: border 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.trainer-card:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+.trainer-card h3{
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+.trainer-card p{
+    transition: color 0.3s ease;
+}
+.trainer-card:hover h3 {
+    color: var(--text-color);
+    
+}
+
+.trainer-card:hover p {
+    color: var(--primary-color);
+    
+}
+.trainer-card img {
+    width: 100%;
+    border-radius: 5px;
+    -webkit-transition: filter 0.3s ease;
+    -moz-transition: filter 0.3s ease;
+    -o-transition: filter 0.3s ease;
+    transition: filter 0.3s ease;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+.trainer-card:hover img {
+    -webkit-filter: grayscale(0%);
+    filter: grayscale(0%);
+}
+.trainer-card h3 {
+    font-size: 1.3rem;
+    margin: 15px 0 5px;
+}
+.trainer-card p {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    color: #ccc;
+}
+.trainer-card .social-icons {
+    margin-top: 10px;
+}
+.trainer-card .social-icons a {
+    color: var(--text-color);
+    margin: 0 5px;
+    font-size: 1.2rem;
+    -moz-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
+    -webkit-transition: color 0.3s ease;
+    transition: color 0.3s ease;
+    display: inline-block;
+    -webkit-transition: color 0.3s ease, transform 0.3s ease;
+    -moz-transition: color 0.3s ease, transform 0.3s ease;
+    -o-transition: color 0.3s ease, transform 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+.trainer-card .social-icons a:hover {
+    color: var(--primary-color);
+    -webkit-transform: translateY(-2px);
+    -ms-transform: translateY(-2px);
+    transform: translateY(-2px);
+}
+.trainer-card:hover {
+    -webkit-transform: translateY(-5px);
+    -ms-transform: translateY(-5px);
+    transform: translateY(-5px);
+    -moz-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+.trainers-section .cta-button {
+    display: block;
+    margin: 40px auto 0;
+    padding: 0.75rem 2rem;
+    background-color: var(--primary-color);
+    color: #1B1B1B;
+    font-weight: 700;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: fit-content;      /* 👈 Ensures it fits content, not too long */
+    max-width: 100%;     /* 👈 Prevents overflow on smaller screens */
+}
+
+.trainers-section .cta-button:hover {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+.trainers-section .cta-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+@media (min-width: 768px) {
+    .trainers-list {
+      justify-content: center;
+      gap: 2.5rem;
+    }
+  
+    .trainer-card {
+      width: 320px;
+    }
+  }
+  
+
+/* ====================================================== 
+   Membership Section - Pricing plans for memberships.
+   Each plan card details features and a sign-up button; one may be highlighted.
+   ====================================================== */
+.membership-section {
+    padding: 60px 0;
+    text-align: center;
+}
+.membership-section h2 {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+}
+.membership-plans {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    gap: 2rem;
+}
+.plan-card {
+    background: #262626;
+    padding: 30px 20px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    width: 300px;
+    text-align: center;
+    color: var(--text-color);
+    position: relative;
+    overflow: hidden;
+    -webkit-transition: transform 0.3s ease, border-color 0.3s ease;
+    -moz-transition: transform 0.3s ease, border-color 0.3s ease;
+    -o-transition: transform 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.plan-card:hover {
+    -webkit-transform: translateY(-5px);
+    -ms-transform: translateY(-5px);
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+}
+.plan-card.featured {
+    border-color: var(--primary-color);
+    background: #1B1B1B;
+}
+.plan-card.featured::before {
+    content: 'Recommended';
+    color: #1B1B1B;
+    background: var(--primary-color);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    position: absolute;
+    top: 15px;
+    left: -45px;
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    padding: 5px 60px;
+}
+.plan-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+.plan-card .price {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin: 20px 0;
+}
+.plan-card .features {
+    text-align: left;
+    margin-bottom: 20px;
+}
+.plan-card .features li {
+    margin: 5px 0;
+    padding-left: 20px;
+    position: relative;
+}
+.plan-card .features li::before {
+    content: '✔';
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+}
+.plan-card .btn {
+    margin-top: 10px;
+}
+
+/* ====================================================== 
+   Blog Section - Recent blog post highlights.
+   Shows blog post image, title, excerpt, and a read-more link.
+   ====================================================== */
+.blog-section {
+    padding: 60px 0 40px;
+    text-align: center;
+}
+.blog-section h2 {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    position: relative;
+}
+.blog-section h2::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -10px;
+    width: 80px;
+    height: 3px;
+    background: var(--primary-color);
+}
+.blog-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+@media (min-width: 768px) {
+    .blog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (min-width: 1024px) {
+    .blog-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+.post-card {
+    background: #262626;
+    border-radius: 5px;
+    overflow: hidden;
+    text-align: left;
+    -webkit-transition: transform 0.3s ease, box-shadow 0.3s ease;
+    -moz-transition: transform 0.3s ease, box-shadow 0.3s ease;
+    -o-transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.post-card:hover {
+    -webkit-transform: translateY(-5px);
+    -ms-transform: translateY(-5px);
+    transform: translateY(-5px);
+    -moz-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+.post-card:hover h3 {
+    color: var(--text-color);
+}
+.post-card:hover p {
+    color: var(--primary-color);
+}
+.post-card img {
+    width: 100%;
+    height: 180px; /* or 180px/220px depending on your design */
+    object-fit: cover;
+    display: block;
+    border-radius: 5px 5px 0 0; /* Optional: round top corners */
+}
+.post-card .post-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.post-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+.post-card p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    color: #ccc;
+    flex-grow: 1;
+}
+.post-card .read-more {
+    font-weight: 700;
+    color: var(--primary-color);
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    -webkit-transition: color 0.3s ease;
+    -moz-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
+    transition: color 0.3s ease;
+}
+.post-card .read-more::after {
+    content: '→';
+    position: relative;
+    left: 5px;
+    -webkit-transition: left 0.3s ease;
+    -moz-transition: left 0.3s ease;
+    -o-transition: left 0.3s ease;
+    transition: left 0.3s ease;
+}
+.post-card .read-more:hover {
+    color: var(--secondary-color);
+}
+.post-card .read-more:hover::after {
+    left: 10px;
+}
+.blog-section .cta-button {
+    display: block;
+    margin: 40px auto 0;
+    padding: 0.75rem 2rem;
+    background-color: var(--primary-color);
+    color: #1B1B1B;
+    font-weight: 700;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    width: fit-content;
+    text-align: center;
+}
+
+.blog-section .cta-button:hover {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.blog-section .cta-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ====================================================== 
+   Contact Section - Contact form and contact information.
+   Allows users to send a message and provides location or social info.
+   ====================================================== */
+.contact-section {
+    padding: 60px 0;
+}
+.contact-section h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+}
+.contact-container {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    gap: 2rem;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.contact-form {
+    -webkit-flex: 1 1 400px;
+    -ms-flex: 1 1 400px;
+    flex: 1 1 400px;
+    max-width: 500px;
+}
+.contact-form label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+.contact-form input, .contact-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 2px solid #444;
+    border-radius: 4px;
+    background: #1B1B1B;
+    color: var(--text-color);
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    -webkit-transition: border-color 0.3s ease;
+    -moz-transition: border-color 0.3s ease;
+    -o-transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease;
+}
+.contact-form textarea {
+    resize: vertical; /* or none if you don't want it resizable */
+    min-height: 150px;
+}
+
+.contact-form input::placeholder, .contact-form textarea::placeholder {
+    color: #777;
+}
+.contact-form input:focus, .contact-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+.btn-secondary {
+    background: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    padding: 0.5rem 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-secondary:hover {
+    background: var(--primary-color);
+    color: #1B1B1B;
+}
+
+.contact-form button {
+    display: inline-block;
+    background: var(--primary-color);
+    color: #1B1B1B;
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    -webkit-transition: background 0.3s ease;
+    -moz-transition: background 0.3s ease;
+    -o-transition: background 0.3s ease;
+    transition: background 0.3s ease;
+}
+.contact-form button:hover {
+    background: var(--secondary-color);
+    color: var(--text-color);
+}
+.form-success {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-top: 1rem;
+    font-size: 1rem;
+    background-color: #1b1b1b;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+.contact-info {
+    -webkit-flex: 1 1 300px;
+    -ms-flex: 1 1 300px;
+    flex: 1 1 300px;
+    max-width: 400px;
+    color: #ccc;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+.contact-info p {
+    margin-bottom: 10px;
+}
+.contact-info a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+/* ====================================================== 
+   Footer - Social media links and copyright information.
+   Sits at the bottom of the page with a dark background.
+   ====================================================== */
+   .footer {
+    background: #111;
+    color: #aaa;
+    padding: 50px 0 20px;
+    font-size: 0.95rem;
+  }
+  .footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+  }
+  .footer-col h3 {
+    color: var(--text-color);
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+  .footer-col ul {
+    list-style: none;
+    padding: 0;
+  }
+  .footer-col ul li {
+    margin-bottom: 10px;
+  }
+  .footer-col ul li a {
+    color: #aaa;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .footer-col ul li a:hover {
+    color: var(--primary-color);
+  }
+  .footer-col p a {
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+  .footer-col .tip-item {
+    margin-bottom: 15px;
+  }
+  .footer-col .tip-item small {
+    color: #777;
+    font-size: 0.8rem;
+  }
+  .footer-col .tip-item p a {
+    color: #ccc;
+    font-weight: 500;
+  }
+  .footer-col .tip-item p a:hover {
+    color: var(--primary-color);
+  }
+  .brand h2 {
+    font-size: 1.8rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
+  }
+  .brand p {
+    margin-bottom: 15px;
+    color: #bbb;
+  }
+  .social-icons a {
+    color: var(--text-color);
+    margin-right: 10px;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+  }
+  .social-icons a:hover {
+    color: var(--primary-color);
+  }
+  .footer-bottom {
+    text-align: center;
+    font-size: 0.85rem;
+    margin-top: 20px;
+  }
+  .footer-bottom span {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+/* ====================================================== 
+   Back to Top Button - Floating button to scroll back to the top of the page.
+   Hidden by default, shown when scrolled down a certain distance.
+   ====================================================== */
+  #backToTop {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: var(--primary-color);
+    color: #1B1B1B;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 9998;
+    display: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  
+  #backToTop:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-3px);
+  }
+    #backToTop:active {
+        transform: translateY(0);
+    }
+    /* ======================================================
+   Whatsapp Floating Button - Floating button for WhatsApp contact.
+   Positioned at the bottom right corner of the screen.
+   ====================================================== */
+  .whatsapp-float {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 90px;
+  right: 25px;
+  z-index: 9999;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.whatsapp-float img {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.1);
+}@media (max-width: 768px) {
+    .whatsapp-float {
+      bottom: 20px;
+      right: 20px;
+    }
+  }
+  
+/* ====================================================== 
+   Modal - Overlay and content box for pop-ups (e.g., sign-up forms or alerts).
+   Hidden by default, shown when active class is added via script.
+   ====================================================== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    z-index: 9999;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+}
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+.modal-content {
+    background: #262626;
+    padding: 20px;
+    border-radius: 5px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    -webkit-transform: translateY(-20px);
+    -ms-transform: translateY(-20px);
+    transform: translateY(-20px);
+    -webkit-transition: transform 0.3s ease;
+    -moz-transition: transform 0.3s ease;
+    -o-transition: transform 0.3s ease;
+    transition: transform 0.3s ease;
+}
+.modal.active .modal-content {
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
+}
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    cursor: pointer;
+}
+.modal-close:hover {
+    color: var(--primary-color);
+}
+/* Optional: image in modal */
+.modal-img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    object-fit: cover;
+  }
+  
+
+/* Modal Heading */
+.modal-content h2 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Modal Text */
+.modal-content p {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Modal CTA Button */
+.modal-content .btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: var(--primary-color);
+    color: #1B1B1B;
+    font-weight: 700;
+    padding: 10px 0;
+    border-radius: 5px;
+    margin-top: 15px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.modal-content .btn:hover {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+
+/* ====================================================== 
+   Animations - Keyframe animations for interactive elements and on-scroll effects.
+   Includes fade-in and slide-up animations for elements with corresponding classes.
+   ====================================================== */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        -ms-transform: translateY(20px);
+        -webkit-transform: translateY(20px);
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        -ms-transform: translateY(0);
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+@-webkit-keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        -ms-transform: translateY(20px);
+        -webkit-transform: translateY(20px);
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        -ms-transform: translateY(0);
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+@-webkit-keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+.fade-in-up {
+    -webkit-animation: fadeInUp 0.8s ease forwards;
+    animation: fadeInUp 0.8s ease forwards;
+}
+.fade-in {
+    -webkit-animation: fadeIn 1s ease forwards;
+    animation: fadeIn 1s ease forwards;
+}
+
+

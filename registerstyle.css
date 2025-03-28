@@ -1,0 +1,205 @@
+/* Root Colors */
+:root {
+    --background-color: #1B1B1B;
+    --text-color: #F2F2F2;
+    --primary-color: #00B78E;
+    --secondary-color: #004C3F;
+  }
+  
+  /* Base Reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+  body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .auth-wrapper {
+    display: flex;
+    width: 900px;
+    height: 620px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    background: #fff;
+  }
+  
+  .auth-box {
+    display: flex;
+    width: 100%;
+  }
+  
+  /* Left Panel */
+  .auth-left {
+    background: var(--primary-color);
+    color: #fff;
+    width: 45%;
+    padding: 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .auth-left h2 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+  }
+  .auth-left p {
+    font-size: 1rem;
+    margin-bottom: 25px;
+  }
+  .auth-left .btn {
+    background: #fff;
+    color: var(--primary-color);
+    padding: 10px 30px;
+    border-radius: 30px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+  .auth-left .btn:hover {
+    background: var(--secondary-color);
+    color: #fff;
+  }
+  .auth-left .back-btn {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 10px 30px;
+    border-radius: 30px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+  
+  .auth-left .back-btn:hover {
+    background: #fff;
+    color: var(--primary-color);
+  }
+  
+  
+  /* Right Panel */
+  .auth-right {
+    width: 55%;
+    padding: 40px 50px;
+    background: #fff;
+    color: #1B1B1B;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-height: 620px;       /* Ensure it doesn't overflow */
+    overflow-y: auto;        /* Enables vertical scrolling */
+    scroll-behavior: smooth;
+  }
+  /* Optional: Custom Scrollbar (modern browsers) */
+  .auth-right::-webkit-scrollbar {
+    width: 6px;
+  }
+  .auth-right::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 5px;
+  }
+  .auth-right::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .auth-right h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 2rem;
+    color: var(--background-color);
+  }
+  .input-group {
+    margin-bottom: 20px;
+  }
+  .input-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  .input-group input,
+  .input-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #f9f9f9;
+  }
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: -10px;
+    margin-bottom: 15px;
+  }
+  .checkbox-group input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+  
+  .checkbox-group label {
+    font-size: 0.95rem;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .btn.primary-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    color: #1B1B1B;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .btn.primary-btn:hover {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+  }
+  
+  .signup-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-size: 0.95rem;
+  }
+  .signup-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .signup-link a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive */
+  @media screen and (max-width: 768px) {
+    .auth-wrapper {
+        flex-direction: column;
+        height: auto;
+        width: 90%;
+    }
+    .auth-left {
+        display: none;
+    }
+    .auth-right {
+        width: 100%;
+        padding: 30px;
+    }
+  }
+  

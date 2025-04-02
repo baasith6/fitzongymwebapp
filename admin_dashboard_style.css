@@ -10,32 +10,36 @@
 body {
   margin: 0;
   padding: 0;
+  height: auto;
+  overflow-y: auto;
   font-family: var(--font);
   background: var(--light-bg);
   color: var(--text-color);
   scroll-behavior: smooth;
+  transition: background 0.3s ease;
 }
 
 .admin-wrapper {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .sidebar {
   width: 270px;
   transition: width 0.3s ease;
-  background: var(--primary-color);
+  background: var(--secondary-color);
   padding: 20px;
   display: flex;
   flex-direction: column;
-  transition: width 0.3s ease;
+  flex-shrink: 0;
+  z-index: 1000;
 }
 
 .sidebar.collapsed {
-  width: 70px;
-  align-items: center;
+  width: 60px;
+  overflow: hidden;
 }
 
 .sidebar .logo {
@@ -43,11 +47,11 @@ body {
   font-weight: 700;
   color: white;
   margin-bottom: 30px;
-  transition: 0.3s ease;
+  transition: font-size 0.3s ease;
 }
 
 .sidebar.collapsed .logo {
-  font-size: 0; /* hide logo text */
+  font-size: 0;
 }
 
 .sidebar .nav {
@@ -61,14 +65,20 @@ body {
 }
 
 .sidebar .nav a {
-  color: #fff;
+  color: white;
   text-decoration: none;
   font-weight: 500;
   display: flex;
   align-items: center;
   gap: 10px;
-  transition: 0.3s ease;
-  white-space: nowrap;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.sidebar .nav a:hover {
+  background: var(--primary-color);
+  color: white;
 }
 
 .sidebar .nav a i {
@@ -78,7 +88,7 @@ body {
 }
 
 .sidebar .nav a span {
-  transition: 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .sidebar.collapsed .nav a span {
@@ -88,80 +98,42 @@ body {
 .sidebar .nav a.logout {
   font-weight: 600;
 }
+
 .toggle-sidebar {
   position: fixed;
   top: 20px;
-  left: 280px;
+  left: 270px;
   background: var(--primary-color);
   color: white;
   border: none;
   padding: 8px 10px;
   border-radius: 4px;
   cursor: pointer;
-  z-index: 999;
+  z-index: 1100;
   transition: left 0.3s ease;
 }
 
 .sidebar.collapsed ~ .toggle-sidebar {
-  left: 90px;
+  left: 70px;
 }
 
-@media (max-width: 768px) {
-  .admin-wrapper {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    padding: 10px 0;
-    height: auto;
-  }
-
-  .sidebar .nav {
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .sidebar .nav li {
-    margin-bottom: 0;
-  }
-
-  .sidebar .nav a span {
-    display: none;
-  }
-
-  .toggle-sidebar {
-    left: 10px;
-    top: 10px;
-  }
-
-  .dashboard {
-    padding: 20px;
-    margin-left: 0 !important;
-  }
-
-  .cards {
-    flex-direction: column;
-  }
-}
-
-
-
-.dashboard.collapsed {
-  margin-left: 70px;
-}
 .dashboard {
   flex: 1;
   padding: 40px;
   overflow-y: auto;
+  overflow-x: hidden;
   background: var(--light-bg);
   min-height: 100vh;
-  transition: background 0.3s ease;
+  transition: margin-left 0.3s ease;
+  margin-left: 270px;
+}
+
+.dashboard.expanded {
+  margin-left: 70px !important;
+}
+
+.sidebar.collapsed ~ .dashboard {
+  margin-left: 60px;
 }
 
 .dashboard-header {
@@ -221,12 +193,6 @@ body {
   color: #555;
 }
 
-.dashboard-tables {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
 .table-container {
   flex: 1;
   min-width: 300px;
@@ -268,7 +234,6 @@ body {
   display: inline-block;
   width: 50px;
   height: 26px;
-  margin-left: auto;
 }
 
 .switch input {
@@ -341,24 +306,27 @@ body.dark-mode .card-icon {
   }
 
   .sidebar {
-    width: 100%;
-    flex-direction: row;
-    overflow-x: auto;
-    justify-content: space-around;
+    width: 60px !important;
+    padding: 10px 0;
+    flex-direction: column;
+    align-items: center;
   }
 
   .sidebar .nav {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 15px;
+    flex-direction: column;
+    gap: 10px;
   }
 
-  .sidebar .nav li {
-    margin: 0;
+  .sidebar .nav a span {
+    display: none !important;
+  }
+
+  .toggle-sidebar {
+    display: none !important;
   }
 
   .dashboard {
+    margin-left: 60px !important;
     padding: 20px;
   }
 

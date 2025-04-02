@@ -4,7 +4,8 @@ include("dbconfig.php");
 
 // Check if admin is logged in
 if (!isset($_SESSION['email']) || $_SESSION['user_type'] !== 'admin') {
-    header("Location: login.php");
+    http_response_code(403);
+    echo "Unauthorized access.";
     exit;
 }
 
@@ -15,8 +16,6 @@ $trainers = [];
 // Handle filter form submission
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['filter_name'])) {
     $filter_name = $_GET['filter_name'];
-
-    // Fetch trainers filtered by name
     $query = "SELECT * FROM trainers WHERE name LIKE ?";
     $stmt = $conn->prepare($query);
     $like_filter = "%" . $filter_name . "%";
@@ -25,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['filter_name'])) {
     $result = $stmt->get_result();
     $trainers = $result->fetch_all(MYSQLI_ASSOC);
 } else {
-    // Fetch all trainers
     $query = "SELECT * FROM trainers";
     $result = $conn->query($query);
     $trainers = $result->fetch_all(MYSQLI_ASSOC);
@@ -37,37 +35,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_tid'])) {
     $deleteQuery = "DELETE FROM trainers WHERE tid = ?";
     $stmt = $conn->prepare($deleteQuery);
     $stmt->bind_param("i", $tid);
-
-    if ($stmt->execute()) {
-        header("Location: view_trainers.php");
-        exit;
-    } else {
-        $error = "Failed to delete trainer. Please try again.";
-    }
+    $stmt->execute();
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Trainers</title>
-    <link rel="stylesheet" href="view_trainers_style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>View Trainers</h1>
+<div class="container">
+    <h1>View Trainers</h1>
 
-        <!-- Filter Form -->
-        <form action="view_trainers.php" method="GET" class="filter-form">
-            <input type="text" name="filter_name" placeholder="Search by name" value="<?php echo htmlspecialchars($filter_name); ?>">
-            <button type="submit">Search</button>
-        </form>
+    <!-- Filter Form -->
+    <form method="GET" class="filter-form">
+        <input type="text" name="filter_name" placeholder="Search by name" value="<?php echo htmlspecialchars($filter_name); ?>">
+        <button type="submit">Search</button>
+    </form>
 
-        <!-- Trainers Table -->
-        <?php if (!empty($trainers)): ?>
-            <table>
+    <!-- Trainers Table -->
+    <?php if (!empty($trainers)): ?>
+        <div class="table-responsive-wrapper">
+            <table class="datatable">
                 <thead>
                     <tr>
                         <th>TID</th>
@@ -85,23 +69,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_tid'])) {
                             <td><?php echo htmlspecialchars($trainer['email']); ?></td>
                             <td><?php echo htmlspecialchars($trainer['contact_number']); ?></td>
                             <td>
-                                <!-- Delete Trainer -->
-                                <form action="view_trainers.php" method="POST" style="display:inline;">
+                                <form method="POST" onsubmit="return confirm('Are you sure you want to delete this trainer?')">
                                     <input type="hidden" name="delete_tid" value="<?php echo $trainer['tid']; ?>">
-                                    <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this trainer?')">Delete</button>
+                                    <button type="submit" class="delete-btn">Delete</button>
                                 </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
-        <?php else: ?>
-            <p class="no-data">No trainers found.</p>
-        <?php endif; ?>
-
-        <div class="back-link">
-            <a href="admin_dashboard.php">Back to Dashboard</a>
         </div>
-    </div>
-</body>
-</html>
+    <?php else: ?>
+        <p class="no-data">No trainers found.</p>
+    <?php endif; ?>
+</div>

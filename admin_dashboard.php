@@ -36,6 +36,8 @@ if ($result->num_rows > 0) {
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="admin_dashboard_style.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="datatables_admin_style.css">
+
 </head>
 <body>
   <div class="admin-wrapper">
@@ -45,17 +47,20 @@ if ($result->num_rows > 0) {
         <li><a href="#" onclick="loadPage('admin_dashboard_cards.php')"><i class='bx bx-home'></i> <span>Dashboard</span></a></li>
         <li><a href="#" onclick="loadPage('view_customers_partial.php')"><i class='bx bx-user'></i> <span>Customers</span></a></li>
         <li><a href="#" onclick="loadPage('view_staff_partial.php')"><i class='bx bx-group'></i> <span>Staff</span></a></li>
-        <li><a href="#"><i class='bx bx-dumbbell'></i> <span>Trainers</span></a></li>
-        <li><a href="#"><i class='bx bx-id-card'></i> <span>Memberships</span></a></li>
-        <li><a href="#"><i class='bx bx-credit-card'></i> <span>Payments</span></a></li>
-        <li><a href="#"><i class='bx bx-message-dots'></i> <span>Feedback</span></a></li>
+        <li><a href="#" onclick="loadPage('add_staff_partial.php')"><i class='bx bx-user-plus'></i> <span>Add Staff</span></a></li>
+        <li><a href="#" onclick="loadPage('view_trainers_partial.php')"><i class='bx bx-dumbbell'></i> <span>Trainers</span></a></li>
+        <li><a href="#" onclick="loadPage('add_trainer_partial.php')"><i class='bx bx-user-plus'></i> <span>Add Trainers</span></a></li>
+        <li><a href="#" onclick="loadPage('view_memberships_partial.php')"><i class='bx bx-id-card'></i> <span>Memberships</span></a></li>
+        <li><a href="#" onclick="loadPage('add_membership_partial.php')"><i class='bx bx-plus-circle'></i> <span>Add Membership</span></a></li>
+        <li><a href="#" onclick="loadPage('view_payments_partial.php')"><i class='bx bx-credit-card'></i> <span>Payments</span></a></li>
+        <li><a href="#" onclick="loadPage('view_feedbacks_partial.php')"><i class='bx bx-message-dots'></i> <span>Feedback</span></a></li>
         <li><a href="logout_admin.php" class="logout"><i class='bx bx-log-out'></i> <span>Logout</span></a></li>
       </ul>
     </aside>
 
     <button class="toggle-sidebar" onclick="toggleSidebar()">
       <i class='bx bx-menu'></i>
-    </button>
+    </button> 
 
     <main class="dashboard">
       <header class="dashboard-header">
@@ -79,16 +84,12 @@ if ($result->num_rows > 0) {
   <script>
     function toggleSidebar() {
       const sidebar = document.querySelector('.sidebar');
-      const toggleBtn = document.querySelector('.toggle-sidebar');
       const dashboard = document.querySelector('.dashboard');
+      const toggleBtn = document.querySelector('.toggle-sidebar');
+
       sidebar.classList.toggle('collapsed');
-      if (sidebar.classList.contains('collapsed')) {
-        toggleBtn.style.left = '90px';
-        dashboard.style.marginLeft = '80px';
-      } else {
-        toggleBtn.style.left = '280px';
-        dashboard.style.marginLeft = '270px';
-      }
+      dashboard.classList.toggle('expanded'); // Apply layout via class
+      
     }
 
     document.getElementById('darkModeToggle').addEventListener('change', function() {

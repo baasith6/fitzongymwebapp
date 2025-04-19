@@ -31,11 +31,49 @@ if ($result->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Profile</title>
-    <link rel="stylesheet" href="view_profile_style.css">
+    <link rel="stylesheet" href="datatables_admin_style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+    .top-bar {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .back-arrow {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-right: 10px;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .back-arrow:hover {
+        color: var(--primary-hover);
+    }
+
+    h1 {
+        margin: 0;
+        font-size: 1.8rem;
+    }
+
+    .profile-info label {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .profile-info p {
+        margin-bottom: 12px;
+        font-size: 1rem;
+    }
+  </style>
 </head>
 <body>
     <div class="container">
-        <h1>Your Profile</h1>
+        <div class="top-bar">
+            <i class='bx bx-arrow-back back-arrow' onclick="window.location.href='customer_dashboard.php'"></i>
+            <h1>Your Profile</h1>
+        </div>
 
         <div class="profile-info">
             <p><label>Name: </label><span><?php echo $userRow['first_name'] . ' ' . $userRow['last_name']; ?></span></p>
@@ -45,9 +83,7 @@ if ($result->num_rows > 0) {
             <p><label>Membership: </label><span><?php echo $userRow['membership_name'] ?: 'Not Assigned'; ?></span></p>
         </div>
 
-        <div class="back-link">
-            <a href="customer_dashboard.php">Back to Dashboard</a>
-        </div>
+        
     </div>
 </body>
 </html>

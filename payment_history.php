@@ -32,7 +32,7 @@ if ($paymentResult->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment History</title>
-    <link rel="stylesheet" href="payment_history_style.css">
+    <link rel="stylesheet" href="datatables_admin_style.css">
 </head>
 <body>
     <div class="container">

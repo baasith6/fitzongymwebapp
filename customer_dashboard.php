@@ -8,21 +8,45 @@ if (!isset($_SESSION['email']) || $_SESSION['user_type'] !== 'customer') {
     exit;
 }
 
+// ✅ Define email from session
+$email = $_SESSION['email'];
 
 // Get user details
-$email = $_SESSION['email'];
-$userQuery = "SELECT first_name, last_name FROM customers WHERE email = '$email'";
-$result = $conn->query($userQuery);
-if ($result->num_rows > 0) {
-    $userRow = $result->fetch_assoc();
-    $firstName = $userRow['first_name'];
-    $lastName = $userRow['last_name'];
-} else {
-    echo "User not found!";
-    exit;
-}
+$query = "SELECT first_name, last_name, dob, membership, payment_option FROM customers WHERE email = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
 
+$firstName = $user['first_name'];
+$lastName = $user['last_name'];
+$dob = $user['dob'];
+$membership = $user['membership'];
+$paymentOption = $user['payment_option'];
+
+// Fetch membership packages
+$packageQuery = "SELECT mid, name FROM membership_package";
+$packages = $conn->query($packageQuery);
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $dob = $_POST['dob'];
+    $membership = $_POST['membership'];
+    $paymentOption = $_POST['paymentOption'];
+
+    $updateQuery = "UPDATE customers SET dob=?, membership=?, payment_option=? WHERE email=?";
+    $stmt = $conn->prepare($updateQuery);
+    $stmt->bind_param("ssss", $dob, $membership, $paymentOption, $email);
+    
+    if ($stmt->execute()) {
+        echo "<div class='success'>✅ Profile updated successfully.</div>";
+    } else {
+        echo "<div class='error'>❌ Failed to update profile.</div>";
+    }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,7 +91,36 @@ if ($result->num_rows > 0) {
       </header>
 
       <div id="main-content">
-        <p>Select an option from the menu.</p>
+        <h2>Complete Your Membership Details</h2>
+        <form method="POST">
+          <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" value="<?= htmlspecialchars($dob) ?>" required>
+          </div>
+
+          <div class="form-group">
+            <label for="membership">Membership Package</label>
+            <select name="membership" id="membership" required>
+              <option value="" disabled>Select a package</option>
+              <?php while($pkg = $packages->fetch_assoc()): ?>
+                <option value="<?= $pkg['mid'] ?>" <?= ($membership === $pkg['mid'] ? 'selected' : '') ?>>
+                  <?= htmlspecialchars($pkg['name']) ?>
+                </option>
+              <?php endwhile; ?>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="paymentOption">Payment Option</label>
+            <select name="paymentOption" id="paymentOption" required>
+              <option value="credit" <?= $paymentOption === 'credit' ? 'selected' : '' ?>>Credit Card</option>
+              <option value="paypal" <?= $paymentOption === 'paypal' ? 'selected' : '' ?>>PayPal</option>
+              <option value="bank" <?= $paymentOption === 'bank' ? 'selected' : '' ?>>Bank Transfer</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn">Save Details</button>
+        </form>
       </div>
     </main>
   </div>

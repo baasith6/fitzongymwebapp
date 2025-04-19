@@ -26,7 +26,7 @@ if ($result->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meal Plans</title>
-    <link rel="stylesheet" href="view_meal_plan_style.css"> <!-- Your CSS file -->
+    <link rel="stylesheet" href="datatables_admin_style.css">
 </head>
 <body>
     <div class="container">

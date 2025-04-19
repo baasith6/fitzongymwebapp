@@ -37,7 +37,20 @@ if ($result->num_rows > 0) {
   <link rel="stylesheet" href="admin_dashboard_style.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="datatables_admin_style.css">
-
+  <style>
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #00B78E;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 6px;
+      display: none;
+      z-index: 9999;
+      font-weight: 600;
+    }
+  </style>
 </head>
 <body>
   <div class="admin-wrapper">
@@ -79,17 +92,16 @@ if ($result->num_rows > 0) {
     </main>
   </div>
 
+  <div id="toast"></div>
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
   <script>
     function toggleSidebar() {
       const sidebar = document.querySelector('.sidebar');
       const dashboard = document.querySelector('.dashboard');
-      const toggleBtn = document.querySelector('.toggle-sidebar');
-
       sidebar.classList.toggle('collapsed');
-      dashboard.classList.toggle('expanded'); // Apply layout via class
-      
+      dashboard.classList.toggle('expanded');
     }
 
     document.getElementById('darkModeToggle').addEventListener('change', function() {
@@ -107,11 +119,22 @@ if ($result->num_rows > 0) {
           if (window.jQuery && $.fn.DataTable) {
             $('.datatable').DataTable();
           }
+
+          
         })
         .catch(err => {
           content.innerHTML = '<p>Error loading content.</p>';
           console.error(err);
         });
+    }
+
+    function showNotification(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3000);
     }
   </script>
 </body>

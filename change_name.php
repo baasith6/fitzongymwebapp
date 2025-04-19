@@ -35,7 +35,7 @@ $userRow = $result->fetch_assoc();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Name</title>
-    <link rel="stylesheet" href="change_name_style.css">
+    <link rel="stylesheet" href="datatables_admin_style.css">
 </head>
 <body>
     <div id="main-container">

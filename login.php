@@ -114,13 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="showPassword">Show Password</label>
           </div>
           <button type="submit" class="btn primary-btn">Login</button>
-          <p class="divider-text">or login with social platforms</p>
-          <div class="social-icons">
-            <a href="#"><img src="icons/google.svg" alt="Google" /></a>
-            <a href="#"><img src="icons/facebook.svg" alt="Facebook" /></a>
-            <a href="#"><img src="icons/github.svg" alt="GitHub" /></a>
-            <a href="#"><img src="icons/linkedin.svg" alt="LinkedIn" /></a>
-          </div>
+          <p class="signup-link">Don't have an account? <a href="register.php">Register</a></p>
         </form>
       </div>
 

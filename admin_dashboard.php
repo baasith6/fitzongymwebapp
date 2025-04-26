@@ -67,9 +67,11 @@ if ($result->num_rows > 0) {
         <li><a href="#" onclick="loadPage('add_membership_partial.php')"><i class='bx bx-plus-circle'></i> <span>Add Membership</span></a></li>
         <li><a href="#" onclick="loadPage('view_payments_partial.php')"><i class='bx bx-credit-card'></i> <span>Payments</span></a></li>
         <li><a href="#" onclick="loadPage('view_feedbacks_partial.php')"><i class='bx bx-message-dots'></i> <span>Feedback</span></a></li>
-        <li><a href="logout_admin.php" class="logout"><i class='bx bx-log-out'></i> <span>Logout</span></a></li>
+        <li><a href="logout.php" class="logout"><i class='bx bx-log-out'></i> <span>Logout</span></a></li>
       </ul>
     </aside>
+
+    <div class="overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
     <button class="toggle-sidebar" onclick="toggleSidebar()">
       <i class='bx bx-menu'></i>
@@ -99,9 +101,26 @@ if ($result->num_rows > 0) {
   <script>
     function toggleSidebar() {
       const sidebar = document.querySelector('.sidebar');
+      const toggleBtn = document.querySelector('.toggle-sidebar');
       const dashboard = document.querySelector('.dashboard');
-      sidebar.classList.toggle('collapsed');
+      const overlay = document.getElementById('sidebarOverlay');
       dashboard.classList.toggle('expanded');
+      // Detect screen size
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile) {
+        sidebar.classList.toggle('show');
+        overlay.style.display = sidebar.classList.contains('show') ? 'block' : 'none';
+      } else {
+        sidebar.classList.toggle('collapsed');
+
+        if (sidebar.classList.contains('collapsed')) {
+          toggleBtn.style.left = "20px";
+        } else {
+          toggleBtn.style.left = "270px";
+        }
+      }
+    
     }
 
     document.getElementById('darkModeToggle').addEventListener('change', function() {

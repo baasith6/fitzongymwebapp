@@ -100,6 +100,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <!-- Right Side -->
       <div class="auth-right">
         <h2>Login</h2>
+        <?php if (!empty($error)): ?>
+          <div style="color:red; font-weight:bold; margin-bottom:10px;">
+            <?php echo htmlspecialchars($error); ?>
+          </div>
+        <?php endif; ?>
         <form action="login.php" method="POST" id="loginForm">
           <div class="input-group">
             <label for="email">Email</label>
@@ -122,5 +127,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 </body>
 </html>
-
-

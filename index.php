@@ -380,62 +380,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </div>
 </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-  <div class="footer-container container">
-    <div class="footer-col brand">
-      <h2><span style="color: var(--primary-color)">Fit</span>Zone</h2>
-      <p>Your fitness journey starts here. Achieve your goals with the best trainers and facilities.</p>
-      <div class="social-icons">
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-youtube"></i></a>
-        <a href="#"><i class="fab fa-envelope"></i></a>
-      </div>
-    </div>
-
-    <div class="footer-col">
-      <h3>Useful Links</h3>
-      <ul>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#classes">Classes</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
-
-    <div class="footer-col">
-      <h3>Support</h3>
-      <ul>
-        <li><a href="#">Login</a></li>
-        <li><a href="#">My Account</a></li>
-        <li><a href="#">Subscribe</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </div>
-
-    <div class="footer-col tips">
-      <h3>Tips & Guides</h3>
-      <div class="tip-item">
-        <p><a href="#">Physical fitness may help prevent depression, anxiety</a></p>
-        <small>3 min read | 20 Comments</small>
-      </div>
-      <div class="tip-item">
-        <p><a href="#">Best exercise to lose belly fat and tone up...</a></p>
-        <small>3 min read | 20 Comments</small>
-      </div>
-    </div>
-  </div>
-
-  <hr style="margin: 20px auto; border-color: #333; max-width: 1200px;" />
-
-  <div class="footer-bottom container">
-    <p>&copy; 2025 <span>FitZone Fitness Center</span>. All rights reserved. | Built with ❤ by Abdul Baasith</p>
-  </div>
-
-  <button id="backToTop" title="Go to top">⇧</button>
-</footer>
+  \
 
 
   

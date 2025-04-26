@@ -79,6 +79,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </ul>
     </aside>
 
+    <div class="overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <button class="toggle-sidebar" onclick="toggleSidebar()">
+      <i class='bx bx-menu'></i>
+    </button> 
+
     <main class="dashboard">
       <header class="dashboard-header">
         <h1>Welcome, <?php echo htmlspecialchars($firstName); ?>!</h1>
@@ -128,6 +134,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
   <script>
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const dashboard = document.querySelector('.dashboard');
+      const overlay = document.getElementById('sidebarOverlay');
+      dashboard.classList.toggle('expanded');
+      // Detect screen size
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile) {
+        sidebar.classList.toggle('show');
+        overlay.style.display = sidebar.classList.contains('show') ? 'block' : 'none';
+      } else {
+        sidebar.classList.toggle('collapsed');
+
+        if (sidebar.classList.contains('collapsed')) {
+          toggleBtn.style.left = "20px";
+        } else {
+          toggleBtn.style.left = "270px";
+        }
+      }
+    
+    }
+
     function loadPage(url) {
       const content = document.getElementById('main-content');
       content.innerHTML = '<p>Loading...</p>';

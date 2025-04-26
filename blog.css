@@ -1,0 +1,323 @@
+/* ======================================================
+   Blog Single Post Page Styles - FitZone Fitness Center
+   File: blog.css
+   Author: FitZone Web Team
+   Date: 2025-04-26
+   ====================================================== */
+
+/* ===========================================
+   Theme Variables: Colors and Fonts 
+   (Reused from style.css for consistency)
+   =========================================== */
+   :root {
+    --background-color: #1B1B1B;
+    --text-color: #F2F2F2;
+    --primary-color: #00B78E;
+    --secondary-color: #004C3F;
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Lato', sans-serif;
+}
+
+.navbar {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 20px 30px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.navbar .logo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.navbar .menu {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .menu li {
+    margin-left: 30px;
+}
+
+.navbar .menu li a {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    padding: 5px 0;
+}
+.navbar .menu li a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-color);
+    -webkit-transition: width 0.3s;
+    -moz-transition: width 0.3s;
+    -o-transition: width 0.3s;
+    transition: width 0.3s;
+}
+.navbar .menu li a:hover::after {
+    width: 100%;
+}
+
+.navbar .toggle {
+    display: none;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-justify-content: space-around;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    width: 30px;
+    height: 22px;
+    cursor: pointer;
+}
+.navbar .toggle span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: var(--text-color);
+    border-radius: 2px;
+    -webkit-transition: transform 0.3s ease, opacity 0.3s ease;
+    -moz-transition: transform 0.3s ease, opacity 0.3s ease;
+    -o-transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.navbar .toggle.active span:nth-child(1) {
+    -ms-transform: rotate(45deg) translate(5px, 5px);
+    -webkit-transform: rotate(45deg) translate(5px, 5px);
+    transform: rotate(45deg) translate(5px, 5px);
+}
+.navbar .toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+.navbar .toggle.active span:nth-child(3) {
+    -ms-transform: rotate(-45deg) translate(6px, -6px);
+    -webkit-transform: rotate(-45deg) translate(6px, -6px);
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+.navbar.scrolled {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #00B78E; /* 👈 New background when scrolled */
+    color: #1B1B1B;            /* 👈 Text fallback (used for logo if needed) */
+    padding: 10px 30px; /* 👈 Shrinks height */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar.scrolled .menu li a {
+    color: #1B1B1B; /* Dark text for white background */
+}
+
+.navbar.scrolled .menu li a::after {
+    background: var(--secondary-color);
+}
+
+.navbar.scrolled .toggle span {
+    background: #1B1B1B;
+}
+
+.navbar.scrolled .logo {
+    font-size: 1.6rem;
+    color: #1B1B1B; /* dark text on bright scroll bg */
+}
+/* Responsive styles for mobile devices*/
+@media (max-width: 768px) {
+    .navbar {
+      flex-wrap: wrap;
+      padding: 15px 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: var(--background-color);
+    }
+  
+    .navbar .menu {
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      background-color: var(--background-color);
+      position: absolute;
+      top: 100%;
+      left: 0;
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 20px;
+      transition: all 0.3s ease;
+      z-index: 999;
+      border-bottom: 1px solid #333;
+    }
+  
+    .navbar .menu.open {
+      opacity: 1;
+      max-height: 500px;
+      padding: 15px 20px;
+    }
+  
+    .navbar .menu li {
+      margin: 10px 0;
+    }
+  
+    .navbar .menu li a {
+      font-size: 1rem;
+      color: var(--text-color);
+    }
+  
+    .navbar .toggle {
+      display: flex !important;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 30px;
+      height: 22px;
+      cursor: pointer;
+      z-index: 1001;
+      position: relative;
+    }
+  
+    .navbar .toggle span {
+      height: 3px;
+      background: var(--text-color);
+      border-radius: 2px;
+      transition: 0.3s ease;
+    }
+  
+    .navbar .toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+  
+    .navbar .toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+  
+    .navbar .toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+    .navbar.scrolled .menu li a {
+        color: var(--text-color) !important; /* Ensures mobile menu uses --text-color on scroll */
+    }
+    
+    .navbar.scrolled .logo {
+        color: var(--text-color); /* Optional: logo matches the menu text in scroll */
+    }
+    
+    .navbar.scrolled .toggle span {
+        background: var(--text-color); /* Keeps toggle icon consistent in scroll */
+    }
+}
+  
+  
+
+/* ===========================================
+   Blog Single Post Section
+   =========================================== */
+.blog-post {
+    padding: 80px 20px;
+    background: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-body);
+}
+
+.blog-post .container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #262626;
+    padding: 40px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.blog-post h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    text-align: center;
+    font-family: var(--font-heading);
+}
+
+.blog-post .post-meta {
+    font-size: 0.9rem;
+    color: #888;
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: var(--font-body);
+}
+
+.blog-post img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.blog-post p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-family: var(--font-body);
+}
+
+/* ===========================================
+   Back to Blog Button
+   =========================================== */
+.blog-post .btn.cta-button {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 0.75rem 2rem;
+    background-color: var(--primary-color);
+    color: #1B1B1B;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 6px;
+    font-family: var(--font-heading);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.blog-post .btn.cta-button:hover {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    transform: translateY(-3px);
+}
+
+/* ===========================================
+   Responsive Adjustments
+   =========================================== */
+@media (max-width: 768px) {
+    .blog-post {
+        padding: 60px 15px;
+    }
+
+    .blog-post .container {
+        padding: 30px 20px;
+    }
+
+    .blog-post h1 {
+        font-size: 2rem;
+    }
+
+    .blog-post p {
+        font-size: 1rem;
+    }
+}

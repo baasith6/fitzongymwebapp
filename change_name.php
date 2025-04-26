@@ -36,11 +36,50 @@ $userRow = $result->fetch_assoc();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Name</title>
     <link rel="stylesheet" href="datatables_admin_style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        .top-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-arrow {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-right: 10px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .back-arrow:hover {
+            color: var(--primary-hover);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .profile-info label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .profile-info p {
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+    </style>
 </head>
 <body>
-    <div id="main-container">
+    <div id="container">
         <div id="form-container">
-            <h1 id="form-title">Change Your Name</h1>
+            <div class="top-bar">
+                <i class='bx bx-arrow-back back-arrow' onclick="window.location.href='customer_dashboard.php'"></i>
+                <h1 id="form-title">Change Your Name</h1>
+            </div>
+            
             <form id="name-form" action="change_name.php" method="POST">
                 <div class="form-group">
                     <label for="first_name">First Name:</label>
@@ -52,7 +91,7 @@ $userRow = $result->fetch_assoc();
                 </div>
                 <button id="submit-button" type="submit">Update Name</button>
             </form>
-            <a id="dashboard-link" href="dashboard.php">Back to Dashboard</a>
+            
         </div>
     </div>
 </body>

@@ -1,7 +1,6 @@
 <?php
 session_start();
 include("dbconfig.php");
-
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['email']) || $_SESSION['user_type'] !== 'admin') {
@@ -27,8 +26,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+    // Check if email already exists
+    $check = $conn->prepare("SELECT id FROM management WHERE email = ?");
+    $check->bind_param("s", $email);
+    $check->execute();
+    $result = $check->get_result();
 
+    if ($result->num_rows > 0) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => '❌ This email is already registered.'
+        ]);
+        exit;
+    }
+
+    // Proceed to insert
+    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
     $stmt = $conn->prepare("INSERT INTO management (first_name, last_name, email, contact_number, password) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $first_name, $last_name, $email, $contact_number, $hashed_password);
 
@@ -60,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-<!-- Staff Form UI -->
+
 <div class="container">
     <h1>Add New Staff</h1>
     <div id="messageBox"></div>
@@ -106,17 +119,16 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(res => res.json())
         .then(data => {
             if (data.status === "success") {
+                messageBox.innerHTML = `<div class='success'>${data.message}</div>`;
                 form.reset();
 
-                // Display toast message from parent (admin_dashboard)
+                // Also show global toast if defined
                 if (window.parent && typeof window.parent.showNotification === "function") {
                     window.parent.showNotification(data.message);
                 } else if (typeof showNotification === "function") {
                     showNotification(data.message);
                 }
 
-                // Also show it inside messageBox (optional)
-                messageBox.innerHTML = `<div class='success'>${data.message}</div>`;
             } else {
                 messageBox.innerHTML = `<div class='error'>${data.message}</div>`;
             }
@@ -128,6 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+
 
 
 

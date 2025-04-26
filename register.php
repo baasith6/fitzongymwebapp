@@ -4,34 +4,58 @@ session_start();
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $firstName = $conn->real_escape_string($_POST['firstName']);
-    $lastName = $conn->real_escape_string($_POST['lastName']);
-    $email = $conn->real_escape_string($_POST['email']);
-    $contactNumber = $conn->real_escape_string($_POST['contactNumber']);
+    $firstName = trim($_POST['firstName']);
+    $lastName = trim($_POST['lastName']);
+    $email = trim($_POST['email']);
+    $contactNumber = trim($_POST['contactNumber']);
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
 
-    // Password match check
-    if ($password !== $confirmPassword) {
-        echo "<script>alert('Passwords do not match.');</script>";
+    $error = "";
+
+    // Server-side validation
+    if (!preg_match("/^[a-zA-Z ]*$/", $firstName)) {
+        $error = "First name can only contain letters and spaces.";
+    } elseif (!preg_match("/^[a-zA-Z ]*$/", $lastName)) {
+        $error = "Last name can only contain letters and spaces.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email format.";
+    } elseif (!preg_match("/^[0-9]{10,15}$/", $contactNumber)) {
+        $error = "Contact number must be between 10 to 15 digits.";
+    } elseif (strlen($password) < 8) {
+        $error = "Password must be at least 8 characters.";
+    } elseif (!preg_match("/[A-Za-z]/", $password) || !preg_match("/[0-9]/", $password)) {
+        $error = "Password must contain both letters and numbers.";
+    } elseif ($password !== $confirmPassword) {
+        $error = "Passwords do not match.";
     } else {
-        // Check if email exists
-        $checkQuery = "SELECT email FROM customers WHERE email = '$email'";
-        $result = $conn->query($checkQuery);
+        // Check if email or contact already exists
+        $checkQuery = "SELECT email FROM customers WHERE email = ? OR contact_number = ?";
+        $stmt = $conn->prepare($checkQuery);
+        $stmt->bind_param("ss", $email, $contactNumber);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            echo "<script>alert('Email already exists.');</script>";
+            $error = "Email or Contact Number already registered.";
         } else {
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
             $insertCustomer = "INSERT INTO customers (first_name, last_name, email, contact_number, password)
-                               VALUES ('$firstName', '$lastName', '$email', '$contactNumber', '$hashedPassword')";
+                               VALUES (?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($insertCustomer);
+            $stmt->bind_param("sssss", $firstName, $lastName, $email, $contactNumber, $hashedPassword);
 
-            if ($conn->query($insertCustomer)) {
-                $conn->query("INSERT INTO usertypes (email, user_type) VALUES ('$email', 'customer')");
+            if ($stmt->execute()) {
+                $insertUserType = "INSERT INTO usertypes (email, user_type) VALUES (?, 'customer')";
+                $stmt2 = $conn->prepare($insertUserType);
+                $stmt2->bind_param("s", $email);
+                $stmt2->execute();
+
                 echo "<script>alert('Registration successful!'); window.location.href='login.php';</script>";
+                exit;
             } else {
-                echo "<script>alert('Error during registration.');</script>";
+                $error = "Error during registration. Please try again.";
             }
         }
     }

@@ -41,10 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Inject style if not already added
 echo "<script>
-  if (!document.querySelector('link[href=\"add_trainer_style.css\"]')) {
+  if (!document.querySelector('link[href=\"datatables_admin_style.css\"]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'add_trainer_style.css';
+    link.href = 'datatables_admin_style.css';
     document.head.appendChild(link);
   }
 </script>";

@@ -52,10 +52,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Feedback</title>
     <link rel="stylesheet" href="datatables_admin_style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        .top-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-arrow {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-right: 10px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .back-arrow:hover {
+            color: var(--primary-hover);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .profile-info label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .profile-info p {
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+        textarea#feedback_text {
+            width: 100%;
+            height: 150px;
+            resize: none; /* Prevent resizing */
+            overflow-y: auto; /* Show scrollbar when content overflows */
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Submit Feedback</h1>
+        <div class="top-bar">
+            <i class='bx bx-arrow-back back-arrow' onclick="window.location.href='customer_dashboard.php'"></i>
+            <h1>Submit Feedback</h1>
+        </div>
+        
 
         <?php if ($error): ?>
             <div class="error"><?php echo $error; ?></div>
@@ -73,9 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit">Submit Feedback</button>
         </form>
 
-        <div class="back-link">
-            <a href="customer_dashboard.php">Back to Dashboard</a>
-        </div>
+        
     </div>
 </body>
 </html>

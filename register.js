@@ -2,75 +2,59 @@
 document.getElementById('showPassword').addEventListener('change', function() {
     const passwordField = document.getElementById('password');
     const confirmPasswordField = document.getElementById('confirmPassword');
-    
-    if (this.checked) {
-        passwordField.type = 'text';
-        confirmPasswordField.type = 'text';
-    } else {
-        passwordField.type = 'password';
-        confirmPasswordField.type = 'password';
-    }
+    passwordField.type = confirmPasswordField.type = this.checked ? 'text' : 'password';
 });
 
-// Password Validation
-document.getElementById('password').addEventListener('input', function() {
-    const password = this.value;
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-    const passwordError = document.getElementById('passwordError');
-
-    passwordError.textContent = '';
-
-    if (!password.match(passwordPattern)) {
-        passwordError.textContent = 'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one symbol.';
-    }
-});
-
-// Password Confirm Validation
-document.getElementById('confirmPassword').addEventListener('input', function() {
-    const password = document.getElementById('password').value;
-    const confirmPassword = this.value;
-    const passwordMatchError = document.getElementById('passwordMatchError');
-
-    passwordMatchError.textContent = '';
-
-    if (password !== confirmPassword) {
-        passwordMatchError.textContent = 'Passwords do not match!';
-    }
-});
-
-// Form submission validation
+// Form Validation and AJAX Submission
 document.getElementById('registerForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Stop normal form submission
+
+    const firstName = document.querySelector('input[name="firstName"]').value.trim();
+    const lastName = document.querySelector('input[name="lastName"]').value.trim();
+    const email = document.querySelector('input[name="email"]').value.trim();
+    const contactNumber = document.querySelector('input[name="contactNumber"]').value.trim();
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
-    
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
     const passwordError = document.getElementById('passwordError');
     const passwordMatchError = document.getElementById('passwordMatchError');
-
-    let validPassword = true;
 
     passwordError.textContent = '';
     passwordMatchError.textContent = '';
 
+    let valid = true;
+
+    // Email format validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        alert('Please enter a valid email address.');
+        valid = false;
+    }
+
+    // Contact number validation (only digits, 10-15 numbers)
+    const contactPattern = /^[0-9]{10,15}$/;
+    if (!contactPattern.test(contactNumber)) {
+        alert('Please enter a valid contact number (10-15 digits).');
+        valid = false;
+    }
+
+    // Password strength validation
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
     if (!password.match(passwordPattern)) {
-        validPassword = false;
-        passwordError.textContent = 'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one symbol.';
+        passwordError.textContent = 'Password must be at least 8 characters, and contain uppercase, lowercase, number, and symbol.';
+        valid = false;
     }
 
+    // Confirm password validation
     if (password !== confirmPassword) {
-        validPassword = false;
         passwordMatchError.textContent = 'Passwords do not match!';
+        valid = false;
     }
 
-    if (!validPassword) {
-        event.preventDefault();
+    if (!valid) {
+        return; // Stop AJAX if form invalid
     }
-});
 
-// AJAX form submission
-document.getElementById('registerForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-
+    // If all validation passed, proceed with AJAX
     const formData = new FormData(this);
 
     fetch('register.php', {
@@ -79,16 +63,21 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     })
     .then(response => response.text())
     .then(data => {
-        if (data.includes("Error: Email already exists")) {
-            alert("Email already exists. Please use a different email.");
-        } else if (data.includes("Registration successful")) {
+        console.log(data); // For debugging
+
+        if (data.includes('Email or Contact Number already registered')) {
+            alert("Email or contact number already exists. Please use different details.");
+        } else if (data.includes('Registration successful')) {
             alert("Registration successful!");
             this.reset();
+        } else if (data.includes('Passwords do not match')) {
+            alert("Passwords do not match.");
         } else {
-            alert("An error occurred: " + data);
+            alert("An unknown error occurred: " + data);
         }
     })
     .catch(error => {
         console.error("Error:", error);
+        alert("A network error occurred. Please try again.");
     });
 });

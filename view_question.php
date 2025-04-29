@@ -20,7 +20,7 @@ if ($result->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Customer Questions</title>
-    <link rel="stylesheet" href="view_feedback_style.css"> <!-- Link to your stylesheet for styling -->
+    <link rel="stylesheet" href="datatables_admin_style.css"> <!-- Link to your stylesheet for styling -->
 </head>
 <body>
 

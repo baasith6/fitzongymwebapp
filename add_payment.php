@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_payment'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Payment</title>
-    <link rel="stylesheet" href="add_trainer_style.css">
+    <link rel="stylesheet" href="datatables_admin_style.css">
 </head>
 <body>
     <div class="container">

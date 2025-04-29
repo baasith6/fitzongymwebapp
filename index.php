@@ -391,7 +391,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="#"><i class="fab fa-instagram"></i></a>
         <a href="#"><i class="fab fa-twitter"></i></a>
         <a href="#"><i class="fab fa-youtube"></i></a>
-        <a href="#"><i class="fab fa-envelope"></i></a>
       </div>
     </div>
 

@@ -37,6 +37,7 @@ if ($result->num_rows > 0) {
   <link rel="stylesheet" href="admin_dashboard_style.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="datatables_admin_style.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert -->
   <style>
     #toast {
       position: fixed;
@@ -60,11 +61,11 @@ if ($result->num_rows > 0) {
         <li><a href="#" onclick="loadPage('admin_dashboard_cards.php')"><i class='bx bx-home'></i> <span>Dashboard</span></a></li>
         <li><a href="#" onclick="loadPage('view_customers_partial.php')"><i class='bx bx-user'></i> <span>Customers</span></a></li>
         <li><a href="#" onclick="loadPage('view_staff_partial.php')"><i class='bx bx-group'></i> <span>Staff</span></a></li>
-        <li><a href="#" onclick="loadPage('add_staff_partial.php')"><i class='bx bx-user-plus'></i> <span>Add Staff</span></a></li>
+        <li><a href="#" onclick="loadPage('add_staff.php')"><i class='bx bx-user-plus'></i> <span>Add Staff</span></a></li>
         <li><a href="#" onclick="loadPage('view_trainers_partial.php')"><i class='bx bx-dumbbell'></i> <span>Trainers</span></a></li>
-        <li><a href="#" onclick="loadPage('add_trainer_partial.php')"><i class='bx bx-user-plus'></i> <span>Add Trainers</span></a></li>
+        <li><a href="#" onclick="loadPage('add_trainer.php')"><i class='bx bx-user-plus'></i> <span>Add Trainers</span></a></li>
         <li><a href="#" onclick="loadPage('view_memberships_partial.php')"><i class='bx bx-id-card'></i> <span>Memberships</span></a></li>
-        <li><a href="#" onclick="loadPage('add_membership_partial.php')"><i class='bx bx-plus-circle'></i> <span>Add Membership</span></a></li>
+        <li><a href="#" onclick="loadPage('add_membership.php')"><i class='bx bx-plus-circle'></i> <span>Add Membership</span></a></li>
         <li><a href="#" onclick="loadPage('view_payments_partial.php')"><i class='bx bx-credit-card'></i> <span>Payments</span></a></li>
         <li><a href="#" onclick="loadPage('view_feedbacks_partial.php')"><i class='bx bx-message-dots'></i> <span>Feedback</span></a></li>
         <li><a href="logout.php" class="logout"><i class='bx bx-log-out'></i> <span>Logout</span></a></li>
@@ -139,12 +140,160 @@ if ($result->num_rows > 0) {
             $('.datatable').DataTable();
           }
 
+          // Attach add staff form events if form present
+          if (document.getElementById('addStaffForm')) {
+              attachAddStaffFormSubmit();
+          }
+          if (url === 'add_trainer.php' && document.getElementById('addTrainerForm')) {
+              attachAddTrainerFormSubmit();
+          }
+          if (url === 'add_membership.php' && document.getElementById('addMembershipForm')) {
+              attachAddMembershipFormSubmit();
+          }
+
+
           
         })
         .catch(err => {
           content.innerHTML = '<p>Error loading content.</p>';
           console.error(err);
         });
+    }
+    function attachAddStaffFormSubmit() {
+      const form = document.getElementById("addStaffForm");
+      if (form) {
+          form.addEventListener("submit", function (e) {
+              e.preventDefault();
+
+              const formData = new FormData(form);
+
+              fetch("add_staff_partial.php", {
+                  method: "POST",
+                  body: formData,
+                  credentials: 'include'
+              })
+              .then(res => res.json())
+              .then(data => {
+                  if (data.status === "success") {
+                      Swal.fire({
+                          icon: 'success',
+                          title: 'Success!',
+                          html: data.message,
+                          timer: 2000,
+                          showConfirmButton: false
+                      }).then(() => {
+                          form.reset();
+                          window.location.reload();
+                      });
+                  } else {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Error!',
+                          html: data.message
+                      });
+                  }
+              })
+              .catch(error => {
+                  console.error("Error:", error);
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Unexpected Error!',
+                      text: '❌ Please try again later.'
+                  });
+              });
+          });
+      }
+    }
+    function attachAddTrainerFormSubmit() {
+      const form = document.getElementById("addTrainerForm");
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault(); // Stop normal reload!
+
+          const formData = new FormData(form);
+
+          fetch("add_trainer_partial.php", {
+            method: "POST",
+            body: formData,
+            credentials: 'include'
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.status === "success") {
+              Swal.fire({
+                icon: 'success',
+                title: 'Trainer Added!',
+                html: data.message,
+                timer: 2000,
+                showConfirmButton: false
+              }).then(() => {
+                form.reset();
+                window.location.reload();
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                html: data.message
+              });
+            }
+          })
+          .catch(error => {
+            console.error("Error:", error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Unexpected Error!',
+              text: '❌ Please try again later.'
+            });
+          });
+        });
+      }
+    }
+    function attachAddMembershipFormSubmit() {
+      const form = document.getElementById("addMembershipForm");
+
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault(); // Stop normal reload
+
+          const formData = new FormData(form);
+
+          fetch("add_membership_partial.php", {
+            method: "POST",
+            body: formData,
+            credentials: 'include'
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.status === "success") {
+              Swal.fire({
+                icon: 'success',
+                title: 'Membership Added!',
+                html: data.message,
+                timer: 2000,
+                showConfirmButton: false
+              }).then(() => {
+                form.reset();
+                window.location.reload();
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                html: data.message
+              });
+            }
+          })
+          .catch(error => {
+            console.error("Error:", error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Unexpected Error!',
+              text: '❌ Please try again later.'
+            });
+          });
+        });
+      }
     }
 
     function showNotification(message) {

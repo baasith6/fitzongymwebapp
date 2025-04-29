@@ -3,11 +3,12 @@ session_start();
 include("dbconfig.php");
 
 // Check if admin is logged in
-if (!isset($_SESSION['email']) || $_SESSION['user_type'] !== 'admin') {
+if (!isset($_SESSION['email']) || !in_array($_SESSION['user_type'], ['admin', 'management'])) {
     http_response_code(403);
     echo "Unauthorized access.";
     exit;
 }
+
 
 // Initialize variables
 $filter_name = '';

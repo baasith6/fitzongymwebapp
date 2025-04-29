@@ -1,74 +1,74 @@
 <?php
 session_start();
 include("dbconfig.php");
+header('Content-Type: application/json');
 
-// Secure access: Only logged-in admin can use this
+// Admin Access Only
 if (!isset($_SESSION['email']) || $_SESSION['user_type'] !== 'admin') {
-    echo "<div class='error'>Access denied. Admin login required.</div>";
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Access denied. Admin login required.'
+    ]);
     exit;
 }
 
-$error = '';
-$success = '';
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $contact_number = $_POST['contact_number'];
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $contact_number = trim($_POST['contact_number']);
 
     if (empty($name) || empty($email) || empty($contact_number)) {
-        $error = "All fields are required.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Invalid email format.";
-    } else {
-        $idQuery = "SELECT MAX(CAST(SUBSTRING(tid, 2) AS UNSIGNED)) AS max_id FROM trainers";
-        $idResult = $conn->query($idQuery);
-        $row = $idResult->fetch_assoc();
-        $next_id = $row['max_id'] + 1;
-        $tid = 'T' . str_pad($next_id, 3, '0', STR_PAD_LEFT);
-
-        $insertQuery = "INSERT INTO trainers (tid, name, email, contact_number) VALUES (?, ?, ?, ?)";
-        $stmt = $conn->prepare($insertQuery);
-        $stmt->bind_param("ssss", $tid, $name, $email, $contact_number);
-
-        if ($stmt->execute()) {
-            $success = "Trainer added successfully!";
-        } else {
-            $error = "Error adding trainer: " . $conn->error;
-        }
+        echo json_encode([
+            'status' => 'error',
+            'message' => '❌ All fields are required.'
+        ]);
+        exit;
     }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => '❌ Invalid email format.'
+        ]);
+        exit;
+    }
+
+    // Check if email already exists
+    $checkQuery = $conn->prepare("SELECT tid FROM trainers WHERE email = ?");
+    $checkQuery->bind_param("s", $email);
+    $checkQuery->execute();
+    $checkResult = $checkQuery->get_result();
+
+    if ($checkResult->num_rows > 0) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => '❌ Trainer with this email already exists.'
+        ]);
+        exit;
+    }
+
+    // Generate new Trainer ID
+    $idQuery = "SELECT MAX(CAST(SUBSTRING(tid, 2) AS UNSIGNED)) AS max_id FROM trainers";
+    $idResult = $conn->query($idQuery);
+    $row = $idResult->fetch_assoc();
+    $next_id = $row['max_id'] + 1;
+    $tid = 'T' . str_pad($next_id, 3, '0', STR_PAD_LEFT);
+
+    // Insert trainer
+    $insertQuery = $conn->prepare("INSERT INTO trainers (tid, name, email, contact_number) VALUES (?, ?, ?, ?)");
+    $insertQuery->bind_param("ssss", $tid, $name, $email, $contact_number);
+
+    if ($insertQuery->execute()) {
+        echo json_encode([
+            'status' => 'success',
+            'message' => "✅ Trainer <strong>" . htmlspecialchars($name) . "</strong> added successfully!"
+        ]);
+    } else {
+        echo json_encode([
+            'status' => 'error',
+            'message' => '❌ Failed to add trainer: ' . $conn->error
+        ]);
+    }
+    exit;
 }
-
-// Inject style if not already added
-echo "<script>
-  if (!document.querySelector('link[href=\"datatables_admin_style.css\"]')) {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'datatables_admin_style.css';
-    document.head.appendChild(link);
-  }
-</script>";
 ?>
-
-<div class="container">
-    <h1>Add Trainer</h1>
-
-    <?php if ($error): ?><div class="error"><?php echo $error; ?></div><?php endif; ?>
-    <?php if ($success): ?><div class="success"><?php echo $success; ?></div><?php endif; ?>
-
-    <form action="add_trainer_partial.php" method="POST">
-        <div class="form-group">
-            <label for="name">Trainer Name:</label>
-            <input type="text" id="name" name="name" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Trainer Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label for="contact_number">Contact Number:</label>
-            <input type="text" id="contact_number" name="contact_number" required>
-        </div>
-        <button type="submit">Add Trainer</button>
-    </form>
-</div>

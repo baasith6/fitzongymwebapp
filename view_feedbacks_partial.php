@@ -2,10 +2,12 @@
 session_start();
 include("dbconfig.php");
 
-if (!isset($_SESSION['email']) || $_SESSION['user_type'] !== 'admin') {
-    header("Location: login.php");
+if (!isset($_SESSION['email']) || !in_array($_SESSION['user_type'], ['admin', 'management'])) {
+    http_response_code(403);
+    echo "Unauthorized access.";
     exit;
 }
+
 
 if (isset($_GET['resolve_id'])) {
     $fid = $_GET['resolve_id'];

@@ -1,8 +1,11 @@
 <?php
 session_start();
 include("dbconfig.php");
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 header('Content-Type: application/json');
 
+// Admin Access Control
 if (!isset($_SESSION['email']) || $_SESSION['user_type'] !== 'admin') {
     echo json_encode([
         'status' => 'error',
@@ -26,8 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Check if email already exists
-    $check = $conn->prepare("SELECT id FROM management WHERE email = ?");
+    $check = $conn->prepare("SELECT email FROM management WHERE email = ?");
     $check->bind_param("s", $email);
     $check->execute();
     $result = $check->get_result();
@@ -40,107 +42,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Proceed to insert
     $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-    $stmt = $conn->prepare("INSERT INTO management (first_name, last_name, email, contact_number, password) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $first_name, $last_name, $email, $contact_number, $hashed_password);
 
-    if ($stmt->execute()) {
+    $conn->begin_transaction();
+
+    try {
+        $stmt = $conn->prepare("INSERT INTO management (first_name, last_name, email, contact_number, password) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssss", $first_name, $last_name, $email, $contact_number, $hashed_password);
+        $stmt->execute();
+
         $stmtUserType = $conn->prepare("INSERT INTO usertypes (email, user_type) VALUES (?, 'management')");
         $stmtUserType->bind_param("s", $email);
+        $stmtUserType->execute();
 
-        if ($stmtUserType->execute()) {
-            echo json_encode([
-                'status' => 'success',
-                'message' => "✅ Staff member <strong>{$first_name} {$last_name}</strong> added successfully."
-            ]);
-        } else {
-            echo json_encode([
-                'status' => 'error',
-                'message' => '❌ Failed to add to usertypes: ' . $stmtUserType->error
-            ]);
-        }
-    } else {
+        $conn->commit(); 
+
+        echo json_encode([
+            'status' => 'success',
+            'message' => "✅ Staff member <strong>" . htmlspecialchars($first_name) . " " . htmlspecialchars($last_name) . "</strong> added successfully."
+        ]);
+    } catch (Exception $e) {
+        $conn->rollback();
         echo json_encode([
             'status' => 'error',
-            'message' => '❌ Failed to add staff: ' . $stmt->error
+            'message' => '❌ Failed to add staff: ' . $e->getMessage()
         ]);
     }
     exit;
 }
 ?>
-
-
-
-
-
-<div class="container">
-    <h1>Add New Staff</h1>
-    <div id="messageBox"></div>
-
-    <form id="addStaffForm" method="POST">
-        <div class="form-group">
-            <label for="first_name">First Name:</label>
-            <input type="text" id="first_name" name="first_name" required>
-        </div>
-        <div class="form-group">
-            <label for="last_name">Last Name:</label>
-            <input type="text" id="last_name" name="last_name" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label for="contact_number">Contact Number:</label>
-            <input type="text" id="contact_number" name="contact_number" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">Add Staff</button>
-    </form>
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("addStaffForm");
-    const messageBox = document.getElementById("messageBox");
-
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const formData = new FormData(form);
-
-        fetch("add_staff_partial.php", {
-            method: "POST",
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === "success") {
-                messageBox.innerHTML = `<div class='success'>${data.message}</div>`;
-                form.reset();
-
-                // Also show global toast if defined
-                if (window.parent && typeof window.parent.showNotification === "function") {
-                    window.parent.showNotification(data.message);
-                } else if (typeof showNotification === "function") {
-                    showNotification(data.message);
-                }
-
-            } else {
-                messageBox.innerHTML = `<div class='error'>${data.message}</div>`;
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            messageBox.innerHTML = "<div class='error'>❌ Unexpected error occurred.</div>";
-        });
-    });
-});
-</script>
-
-
-
-

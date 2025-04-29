@@ -2,7 +2,9 @@
 include("dbconfig.php");
 session_start();
 
-// Handle form submission
+$error = "";
+$success = false; // ADD this line
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $firstName = trim($_POST['firstName']);
     $lastName = trim($_POST['lastName']);
@@ -10,8 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $contactNumber = trim($_POST['contactNumber']);
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
-
-    $error = "";
 
     // Server-side validation
     if (!preg_match("/^[a-zA-Z ]*$/", $firstName)) {
@@ -41,30 +41,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-            $insertCustomer = "INSERT INTO customers (first_name, last_name, email, contact_number, password)
-                               VALUES (?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($insertCustomer);
-            $stmt->bind_param("sssss", $firstName, $lastName, $email, $contactNumber, $hashedPassword);
+            // Start transaction
+            $conn->begin_transaction();
 
-            if ($stmt->execute()) {
+            try {
+                $insertCustomer = "INSERT INTO customers (first_name, last_name, email, contact_number, password)
+                                   VALUES (?, ?, ?, ?, ?)";
+                $stmt = $conn->prepare($insertCustomer);
+                $stmt->bind_param("sssss", $firstName, $lastName, $email, $contactNumber, $hashedPassword);
+                $stmt->execute();
+
                 $insertUserType = "INSERT INTO usertypes (email, user_type) VALUES (?, 'customer')";
                 $stmt2 = $conn->prepare($insertUserType);
                 $stmt2->bind_param("s", $email);
                 $stmt2->execute();
 
-                echo "<script>alert('Registration successful!'); window.location.href='login.php';</script>";
-                exit;
-            } else {
-                $error = "Error during registration. Please try again.";
+                $conn->commit();
+                $success = true; // Set success flag ✅
+            } catch (Exception $e) {
+                $conn->rollback();
+                $error = "Registration failed. Please try again.";
             }
         }
     }
 }
 ?>
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,9 +74,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <title>Register</title>
   <link rel="stylesheet" href="registerstyle.css" />
   <script defer src="register.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Include SweetAlert2 -->
 </head>
 <body>
 
+<?php if (!empty($error)) { ?>
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Registration Failed!',
+    text: '<?php echo $error; ?>'
+});
+</script>
+<?php } ?>
+
+<?php if ($success) { ?>
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Registration Successful!',
+    text: 'Redirecting to login page...',
+    timer: 2000,
+    showConfirmButton: false
+}).then(() => {
+    window.location.href = 'login.php';
+});
+</script>
+<?php } ?>
+
+<!-- Your Form Starts Below -->
 <div class="auth-wrapper">
   <div class="auth-box">
     <div class="auth-left">
@@ -127,9 +154,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 </div>
 
-
-
 </body>
 </html>
-
-

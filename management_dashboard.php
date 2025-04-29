@@ -33,6 +33,8 @@ if ($result->num_rows > 0) {
   <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="admin_dashboard_style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <style>
     #toast {
       position: fixed;
@@ -53,7 +55,7 @@ if ($result->num_rows > 0) {
     <aside class="sidebar">
       <div class="logo">FitZone</div>
       <ul class="nav">
-        <li><a href="#" onclick="loadPage('manage_customers.php')"><i class='bx bx-user'></i> <span>Manage Customers</span></a></li>
+        <li><a href="#" onclick="loadPage('manage_customers_partial.php')"><i class='bx bx-user'></i> <span>Manage Customers</span></a></li>
         <li><a href="#" onclick="loadPage('view_classes.php')"><i class='bx bx-calendar-event'></i> <span>View Classes</span></a></li>
         <li><a href="#" onclick="loadPage('add_class.php')"><i class='bx bx-plus-circle'></i> <span>Add Class</span></a></li>
         <li><a href="#" onclick="loadPage('view_class_booking.php')"><i class='bx bx-list-check'></i> <span>Class Bookings</span></a></li>
@@ -121,11 +123,137 @@ if ($result->num_rows > 0) {
         .then(response => response.text())
         .then(html => {
           content.innerHTML = html;
+
+          setTimeout(() => {
+            // Auto-attach form submissions if specific page loaded
+            if (url === 'add_class.php' && document.getElementById('addClassForm')) {
+              attachAddClassFormSubmit();
+            }
+            if (url === 'add_payment.php' && document.getElementById('addPaymentForm')) {
+              attachAddPaymentFormSubmit();
+            }
+            if (url === 'manage_customers_partial.php') {   // ✅ NEW LINE
+              attachEditCustomerEvents();                  // ✅ NEW LINE
+            }
+            // Add more if needed
+            if (window.jQuery && $.fn.DataTable) {
+              $('.datatable').DataTable(); // If page contains datatables
+            }
+          }, 100); // slight timeout to ensure DOM is ready
         })
         .catch(err => {
           content.innerHTML = '<p>Error loading content.</p>';
           console.error(err);
         });
+    }
+    function attachEditCustomerEvents() {
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.getElementById('first_name').value = this.dataset.firstname;
+          document.getElementById('last_name').value = this.dataset.lastname;
+          document.getElementById('new_email').value = this.dataset.email;
+          document.getElementById('old_email').value = this.dataset.email;
+          document.getElementById('contact_number').value = this.dataset.contact;
+          document.getElementById('editModal').style.display = "block";
+        });
+      });
+
+      // Close Modal
+      document.querySelector(".close").onclick = function() {
+        document.getElementById('editModal').style.display = "none";
+      };
+
+      window.onclick = function(event) {
+        if (event.target == document.getElementById('editModal')) {
+          document.getElementById('editModal').style.display = "none";
+        }
+      };
+
+      // Handle Submit of Edit Form
+      document.getElementById('editCustomerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        fetch('update_customer_partial.php', {
+          method: 'POST',
+          body: formData,
+          credentials: 'include'
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            Swal.fire({
+              icon: 'success',
+              title: 'Updated!',
+              text: data.message,
+              timer: 2000,
+              showConfirmButton: false
+            }).then(() => {
+              window.location.reload();
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: data.message
+            });
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Unexpected Error!',
+            text: 'Please try again later.'
+          });
+        });
+      });
+    }
+
+    function attachAddClassFormSubmit() {
+      const form = document.getElementById('addClassForm');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+
+          const formData = new FormData(form);
+
+          fetch('add_class_partial.php', {
+            method: 'POST',
+            body: formData,
+            credentials: 'include'
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.status === "success") {
+              Swal.fire({
+                icon: 'success',
+                title: 'Class Added!',
+                html: data.message,
+                timer: 2000,
+                showConfirmButton: false
+              }).then(() => {
+                form.reset();
+                window.location.reload();
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                html: data.message
+              });
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Unexpected Error!',
+              text: '❌ Please try again later.'
+            });
+          });
+        });
+      }
     }
 
     function showNotification(message) {

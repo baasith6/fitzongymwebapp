@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 04, 2024 at 02:17 AM
+-- Host: 127.0.0.1:3307:3307
+-- Generation Time: Apr 26, 2025 at 08:23 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.1.25
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,7 +38,35 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`email`, `name`, `password`) VALUES
-('email@admin.com', 'Admin 1', '23d42f5f3f66498b2c8ff4c20b8c5ac826e47146');
+('icbt1101@gmail.com', 'icbt1101', '88df719b77ddadc98d972414e29d0074cef679e7');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bmi_records`
+--
+
+CREATE TABLE `bmi_records` (
+  `id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `weight` decimal(5,2) NOT NULL,
+  `height` decimal(4,2) NOT NULL,
+  `bmi` decimal(5,2) NOT NULL,
+  `category` varchar(20) NOT NULL,
+  `calculated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bmi_records`
+--
+
+INSERT INTO `bmi_records` (`id`, `email`, `weight`, `height`, `bmi`, `category`, `calculated_at`) VALUES
+(1, 'icbt0602@gmail.com', 110.00, 99.99, 0.00, 'Underweight', '2025-04-19 07:31:15'),
+(2, 'icbt0602@gmail.com', 110.00, 99.99, 0.00, 'Underweight', '2025-04-19 07:31:17'),
+(3, 'icbt0602@gmail.com', 110.00, 99.99, 0.00, 'Underweight', '2025-04-19 07:31:19'),
+(4, 'icbt0602@gmail.com', 110.00, 99.99, 0.00, 'Underweight', '2025-04-19 07:31:20'),
+(5, 'icbt0602@gmail.com', 110.00, 99.99, 0.00, 'Underweight', '2025-04-19 07:31:21'),
+(6, 'icbt0602@gmail.com', 94.00, 1.77, 30.00, 'Obesity', '2025-04-19 07:35:06');
 
 -- --------------------------------------------------------
 
@@ -51,15 +79,6 @@ CREATE TABLE `classes` (
   `class_name` text NOT NULL,
   `trainer` varchar(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `classes`
---
-
-INSERT INTO `classes` (`cid`, `class_name`, `trainer`) VALUES
-('C001', 'Strength Training', 'T002'),
-('C002', 'Yoga Flow', 'T003'),
-('C003', 'Cardio Burn', 'T001');
 
 -- --------------------------------------------------------
 
@@ -75,15 +94,6 @@ CREATE TABLE `class_bookings` (
   `time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `class_bookings`
---
-
-INSERT INTO `class_bookings` (`bid`, `email`, `cid`, `date`, `time`) VALUES
-('', 'iamtabishek@gmail.com', 'C001', '2024-11-30', '05:39:48'),
-('', 'itstabishek@gmail.com', 'C002', '2024-11-29', '19:39:48'),
-('B001', 'itstabishek@gmail.com', 'C002', '2024-11-28', '07:20:00');
-
 -- --------------------------------------------------------
 
 --
@@ -91,24 +101,30 @@ INSERT INTO `class_bookings` (`bid`, `email`, `cid`, `date`, `time`) VALUES
 --
 
 CREATE TABLE `customers` (
+  `email` varchar(100) NOT NULL,
   `first_name` text NOT NULL,
   `last_name` text NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `contact_number` int(10) NOT NULL,
-  `dob` date NOT NULL,
-  `membership` varchar(50) NOT NULL,
-  `payment_option` text NOT NULL,
-  `password` varchar(255) NOT NULL
+  `contact_number` varchar(15) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `image_url` text DEFAULT NULL,
+  `dob` date DEFAULT NULL,
+  `membership` varchar(50) DEFAULT NULL,
+  `payment_option` text DEFAULT NULL,
+  `membership_start` date DEFAULT NULL,
+  `membership_end` date DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`first_name`, `last_name`, `email`, `contact_number`, `dob`, `membership`, `payment_option`, `password`) VALUES
-('Abishek', 'Abi', 'abi@gmail.com', 771234567, '2001-10-06', 'M002', 'paypal', '$2y$10$WABt/hKKa8emafDgYIDDa.KdkHOCxtQ87274qYJvAnVHMf/R6VsOW'),
-('Abishek', 'Thayanantham', 'abishek@gmail.com', 771234567, '2001-10-06', 'M002', 'paypal', '$2y$10$fhS0zeqcmpSCMA0E3O8bnugeoIsrNYwBT07Dnw90tAZkFrFPzJbYW'),
-('Abishek', 'Thayaanantham', 'itstabishek@gmail.com', 752220380, '2024-11-28', 'M002', 'credit', '$2y$10$oo8NLLLSvkZColr9h6JyR.sMeZYTdzQDvnMW.G0VHXIyr72ccp0Oy');
+INSERT INTO `customers` (`email`, `first_name`, `last_name`, `contact_number`, `password`, `image_url`, `dob`, `membership`, `payment_option`, `membership_start`, `membership_end`, `is_deleted`) VALUES
+('abi18@gmail.com', 'abi', 'abith', '0777353485', '$2y$10$trCTe3h00EzlqxnvTxOgbe5Xgam7IowxlYrKflFD45jl4UwEyknAO', NULL, NULL, NULL, NULL, NULL, NULL, 0),
+('icbt0601@gmail.com', 'icbt', '0601', '+94777353488', '$2y$10$2HQm4JBcVwb720eS9W5nGeXFmytxyGXzqPWpWkSi.3ncv86P.Vtu6', NULL, NULL, NULL, NULL, NULL, NULL, 0),
+('icbt0602@gmail.com', 'abdul', '0602', '+94777353485', '$2y$10$X6ZnJ/I4M2.XTlxpQQTTfeP2jSsd/MuEv.ik5d7KU4fEmjFmvSB2K', NULL, '2003-11-24', 'M003', 'paypal', NULL, NULL, 0),
+('nana18@gmail.com', 'abdul', 'nana', '0770883095', '$2y$10$3lphNQNKwa8d.gRWMF7Hme/XmPONEBSVmc8s/5TPu2FmdhZqeCBUO', NULL, NULL, NULL, NULL, NULL, NULL, 0),
+('raws18@gmail.com', 'rows', 'ahamed', '0769637929', '$2y$10$RHuPtSlagbss5juGCm.IM.KaRE8gLW/a0hOGmkigDOw2jBnhGszpK', NULL, NULL, NULL, NULL, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -120,8 +136,8 @@ CREATE TABLE `feedback` (
   `fid` varchar(6) NOT NULL,
   `email` varchar(100) NOT NULL,
   `feedback_text` text NOT NULL,
-  `feedback_date` date NOT NULL DEFAULT current_timestamp(),
-  `feedback_time` time NOT NULL DEFAULT current_timestamp(),
+  `feedback_date` date NOT NULL DEFAULT curdate(),
+  `feedback_time` time NOT NULL DEFAULT curtime(),
   `status` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -130,12 +146,10 @@ CREATE TABLE `feedback` (
 --
 
 INSERT INTO `feedback` (`fid`, `email`, `feedback_text`, `feedback_date`, `feedback_time`, `status`) VALUES
-('F001', 'itstabishek@gmail.com', '0', '2024-11-29', '02:47:51', 'Resolved'),
-('F002', 'itstabishek@gmail.com', '0', '2024-11-29', '02:48:14', 'Resolved'),
-('F003', 'itstabishek@gmail.com', '0', '2024-11-29', '02:50:29', 'Resolved'),
-('F004', 'itstabishek@gmail.com', '0', '2024-11-29', '02:53:20', 'Resolved'),
-('F005', 'itstabishek@gmail.com', 'jbk', '2024-11-29', '02:56:15', 'Resolved'),
-('F006', 'itstabishek@gmail.com', ' k', '2024-11-29', '03:34:22', 'Resolved');
+('F001', 'icbt0602@gmail.com', 'fgththttrtrtgfgrg', '2025-04-19', '10:40:23', 'Resolved'),
+('F002', 'icbt0602@gmail.com', '080', '2025-04-19', '11:00:30', 'Resolved'),
+('F003', 'icbt0602@gmail.com', 'rerwecbvfggxcfdsfg', '2025-04-26', '05:02:37', 'Resolved'),
+('F004', 'icbt0602@gmail.com', 'the meal plan is goood', '2025-04-26', '05:20:29', 'Resolved');
 
 -- --------------------------------------------------------
 
@@ -144,19 +158,26 @@ INSERT INTO `feedback` (`fid`, `email`, `feedback_text`, `feedback_date`, `feedb
 --
 
 CREATE TABLE `management` (
+  `email` varchar(100) NOT NULL,
   `first_name` text NOT NULL,
   `last_name` text NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `contact_number` int(10) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `contact_number` varchar(15) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `image_url` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `management`
 --
 
-INSERT INTO `management` (`first_name`, `last_name`, `email`, `contact_number`, `password`) VALUES
-('Tony', 'Stark', 'tony@gmail.com', 771234567, '$2y$10$Fw5sAQy2WIydJGDc/jyQTeNCbGpK3VVQ1/BbTS1nzffFun5Zjx7Lu');
+INSERT INTO `management` (`email`, `first_name`, `last_name`, `contact_number`, `password`, `image_url`) VALUES
+('ahamed123@gmail.com', 'saneej', 'sa', '', '$2y$12$yKuaaFn53Eh1MQ3afi8Xs.9HjV9mVk6BFBXUUentMUGM6pKxOwI4y', NULL),
+('ahamedsajee2002@gmail.com', 'Ahamed', 'sajee', '0769637929', '$2y$10$vcXGYdd.uahNp8mapyX2N.jke3QVOE10m7nwOuQT/.wtJpeJbADkC', NULL),
+('djblack060@gmail.com', 'SABOOR', 'BAASITH', '0777353481', '$2y$10$b0Ffaz2ixvuSeI3IpHb6D.p2gmuwc6bdjrBJlU.2fyfD0dR2PAKHu', NULL),
+('mohi50@gmail.com', 'saboor', 'mohi', '0777353485', '$2y$10$bkgAxeEYnXswDKcJPSFUy.UDQ8LMWFyaPB5m9v.fpFwDeQXjPkPPu', NULL),
+('newtest02@gmail.com', 'newtest', '02', '0769637929', '$2y$10$LsV/RoZ33BDewrM9m/C81O3tWLt7uV/TwZe.6dEUMkl.j9GCp/GXS', NULL),
+('rejina123@gmail.com', 'Abdul', 'rejin', '0777353481', '$2y$10$5CeNABoyfD.6b4dFk2zYG.HYrUmQrXg8ifm3421XpU9SDbc9Y0VU.', NULL),
+('test01@gmail.com', 'test', '01', '0777353485', '$2y$10$Ckb0TOy7BqZt9Oixn/slPup1ZkzBRvcpxuoRBsg2Ai3XCAPc43hVW', NULL);
 
 -- --------------------------------------------------------
 
@@ -171,18 +192,6 @@ CREATE TABLE `meal_plans` (
   `fat_loss` text DEFAULT NULL,
   `general_fitness` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `meal_plans`
---
-
-INSERT INTO `meal_plans` (`id`, `meal_type`, `muscle_gain`, `fat_loss`, `general_fitness`) VALUES
-(1, 'Breakfast', 'Scrambled eggs (3) with spinach, whole-grain toast, oatmeal with protein powder, chia seeds, fruit', 'Egg whites (4-5) with tomatoes & spinach, whole-grain toast with almond butter', 'Whole-grain toast with avocado & poached eggs (2), smoothie with spinach, banana, protein powder'),
-(2, 'Snack', 'Protein shake with banana or apple, mixed nuts', 'Protein shake, small handful of almonds or walnuts', 'Greek yogurt (150g) with granola & berries'),
-(3, 'Lunch', 'Grilled chicken (200g), quinoa (1 cup), roasted veggies, avocado', 'Grilled turkey breast (150g), mixed greens, quinoa (1/2 cup), olive oil dressing', 'Grilled chicken (150g) or tofu, brown rice (1/2 cup), mixed vegetables, pumpkin seeds'),
-(4, 'Snack (Post-Workout)', 'Protein shake, whole-grain bread with almond butter', 'Protein shake with water, small apple or carrot sticks', 'Protein shake, small fruit (apple/orange)'),
-(5, 'Dinner', 'Grilled salmon (200g), sweet potatoes (1 medium), steamed veggies, salad', 'Grilled chicken (150g), cauliflower rice, steamed broccoli, avocado', 'Grilled salmon (150g), quinoa, roasted veggies, side salad'),
-(6, 'Evening Snack', 'Greek yogurt (200g) with berries & honey or cottage cheese with cucumber', 'Cottage cheese with cucumber slices or boiled egg', 'Boiled egg or cottage cheese with cucumber slices');
 
 -- --------------------------------------------------------
 
@@ -205,7 +214,24 @@ INSERT INTO `membership_package` (`mid`, `name`, `price`) VALUES
 ('M002', 'Standard Membership', 3500),
 ('M003', 'Premium Membership', 5000),
 ('M004', 'Student Membership', 3000),
-('M005', 'Online Membership', 1500);
+('M005', 'Online Membership', 1500),
+('M006', 'Couples Wales', 2300),
+('M007', 'single goal', 4000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `message` text DEFAULT NULL,
+  `seen` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -216,20 +242,11 @@ INSERT INTO `membership_package` (`mid`, `name`, `price`) VALUES
 CREATE TABLE `payments` (
   `pid` varchar(6) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `payment_date` date NOT NULL DEFAULT current_timestamp(),
-  `payment_time` time NOT NULL DEFAULT current_timestamp(),
+  `payment_date` date NOT NULL DEFAULT curdate(),
+  `payment_time` time NOT NULL DEFAULT curtime(),
   `amount` double NOT NULL,
   `payment_method` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `payments`
---
-
-INSERT INTO `payments` (`pid`, `email`, `payment_date`, `payment_time`, `amount`, `payment_method`) VALUES
-('P001', 'itstabishek@gmail.com', '2024-11-29', '02:26:32', 400, 'Credit'),
-('P002', 'iamtabishek@gmail.com', '2024-11-29', '02:26:32', 500, 'Debit'),
-('P9502', 'istabishek@gmail.com', '2024-11-22', '13:07:00', 1000, 'Credit Card');
 
 -- --------------------------------------------------------
 
@@ -241,7 +258,7 @@ CREATE TABLE `questions` (
   `name` text NOT NULL,
   `email` varchar(100) NOT NULL,
   `message` text NOT NULL,
-  `date` date NOT NULL DEFAULT current_timestamp()
+  `date` date NOT NULL DEFAULT curdate()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -249,9 +266,36 @@ CREATE TABLE `questions` (
 --
 
 INSERT INTO `questions` (`name`, `email`, `message`, `date`) VALUES
-('sfd', 'itstabishek@gmail.com', 'fass', '2024-11-29'),
-('sfd', 'itstabishek@gmail.com', 'fass', '2024-11-29'),
-('Abishek', 'itstabishek@gmail.com', 'sample1', '2024-11-29');
+('SABOOR MOHAIDEEN ABDUL BAASITH', 'djblack060@gmail.com', 'i want to know about more trainng and activities', '2025-04-26');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ratings`
+--
+
+CREATE TABLE `ratings` (
+  `id` int(11) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `target_id` varchar(6) DEFAULT NULL,
+  `target_type` enum('class','trainer') NOT NULL,
+  `rating` int(11) DEFAULT NULL CHECK (`rating` >= 1 and `rating` <= 5),
+  `comment` text DEFAULT NULL,
+  `rated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `report_log`
+--
+
+CREATE TABLE `report_log` (
+  `id` int(11) NOT NULL,
+  `generated_by` varchar(100) DEFAULT NULL,
+  `report_type` varchar(100) DEFAULT NULL,
+  `generated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -263,18 +307,21 @@ CREATE TABLE `trainers` (
   `tid` varchar(6) NOT NULL,
   `name` text NOT NULL,
   `email` varchar(100) NOT NULL,
-  `contact_number` int(10) NOT NULL
+  `contact_number` varchar(15) NOT NULL,
+  `image_url` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `trainers`
 --
 
-INSERT INTO `trainers` (`tid`, `name`, `email`, `contact_number`) VALUES
-('T001', 'Albert Einstein', 'albert@gmail.com', 771234567),
-('T002', 'Isaac Newton', 'isaac@gmail.com', 751234567),
-('T003', 'Nikola Tesla', 'tesla@gmail.com', 781234567),
-('T004', 'Elon Musk', 'elon@gmail.com', 711234567);
+INSERT INTO `trainers` (`tid`, `name`, `email`, `contact_number`, `image_url`) VALUES
+('T001', 'SABOOR MOHAIDEEN ABDUL BAASITH', 'abaasith18@gmail.com', '0777353481', NULL),
+('T002', 'SABOOR MOHAIDEEN ABDUL BAASITH', 'djblack060@gmail.com', '0777353481', NULL),
+('T003', 'abdul', 'abdulbaasith1124@gmail.com', '0777353481', NULL),
+('T004', 'ahamed', 'saeej123@gmail.com', '0777353481', NULL),
+('T005', 'ahamed', 'saeej1234@gmail.com', '0777353481', NULL),
+('T006', 'baka', 'baka123@gmail.com', '0770883095', NULL);
 
 -- --------------------------------------------------------
 
@@ -292,12 +339,19 @@ CREATE TABLE `usertypes` (
 --
 
 INSERT INTO `usertypes` (`email`, `user_type`) VALUES
-('abc@gmail.com', 'management'),
-('abcd@gmail.com', 'management'),
-('abi@gmail.com', 'customer'),
-('abishek@gmail.com', 'customer'),
-('itstabishek@gmail.com', 'customer'),
-('tony@gmail.com', 'management');
+('abi18@gmail.com', 'customer'),
+('ahamed123@gmail.com', 'management'),
+('ahamedsajee2002@gmail.com', 'management'),
+('djblack060@gmail.com', 'management'),
+('icbt0601@gmail.com', 'customer'),
+('icbt0602@gmail.com', 'customer'),
+('icbt1101@gmail.com', 'admin'),
+('mohi50@gmail.com', 'management'),
+('nana18@gmail.com', 'customer'),
+('newtest02@gmail.com', 'management'),
+('raws18@gmail.com', 'customer'),
+('rejina123@gmail.com', 'management'),
+('test01@gmail.com', 'management');
 
 --
 -- Indexes for dumped tables
@@ -310,10 +364,26 @@ ALTER TABLE `admin`
   ADD PRIMARY KEY (`email`);
 
 --
+-- Indexes for table `bmi_records`
+--
+ALTER TABLE `bmi_records`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `email` (`email`);
+
+--
 -- Indexes for table `classes`
 --
 ALTER TABLE `classes`
-  ADD PRIMARY KEY (`cid`);
+  ADD PRIMARY KEY (`cid`),
+  ADD KEY `fk_class_trainer` (`trainer`);
+
+--
+-- Indexes for table `class_bookings`
+--
+ALTER TABLE `class_bookings`
+  ADD PRIMARY KEY (`bid`),
+  ADD KEY `fk_cb_email` (`email`),
+  ADD KEY `fk_cb_cid` (`cid`);
 
 --
 -- Indexes for table `customers`
@@ -325,7 +395,8 @@ ALTER TABLE `customers`
 -- Indexes for table `feedback`
 --
 ALTER TABLE `feedback`
-  ADD PRIMARY KEY (`fid`);
+  ADD PRIMARY KEY (`fid`),
+  ADD KEY `fk_feedback_email` (`email`);
 
 --
 -- Indexes for table `management`
@@ -346,6 +417,31 @@ ALTER TABLE `membership_package`
   ADD PRIMARY KEY (`mid`);
 
 --
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`pid`),
+  ADD KEY `fk_payment_email` (`email`);
+
+--
+-- Indexes for table `ratings`
+--
+ALTER TABLE `ratings`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `report_log`
+--
+ALTER TABLE `report_log`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `trainers`
 --
 ALTER TABLE `trainers`
@@ -362,10 +458,69 @@ ALTER TABLE `usertypes`
 --
 
 --
+-- AUTO_INCREMENT for table `bmi_records`
+--
+ALTER TABLE `bmi_records`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `meal_plans`
 --
 ALTER TABLE `meal_plans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `ratings`
+--
+ALTER TABLE `ratings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `report_log`
+--
+ALTER TABLE `report_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `bmi_records`
+--
+ALTER TABLE `bmi_records`
+  ADD CONSTRAINT `bmi_records_ibfk_1` FOREIGN KEY (`email`) REFERENCES `customers` (`email`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `classes`
+--
+ALTER TABLE `classes`
+  ADD CONSTRAINT `fk_class_trainer` FOREIGN KEY (`trainer`) REFERENCES `trainers` (`tid`);
+
+--
+-- Constraints for table `class_bookings`
+--
+ALTER TABLE `class_bookings`
+  ADD CONSTRAINT `fk_cb_cid` FOREIGN KEY (`cid`) REFERENCES `classes` (`cid`),
+  ADD CONSTRAINT `fk_cb_email` FOREIGN KEY (`email`) REFERENCES `customers` (`email`);
+
+--
+-- Constraints for table `feedback`
+--
+ALTER TABLE `feedback`
+  ADD CONSTRAINT `fk_feedback_email` FOREIGN KEY (`email`) REFERENCES `customers` (`email`);
+
+--
+-- Constraints for table `payments`
+--
+ALTER TABLE `payments`
+  ADD CONSTRAINT `fk_payment_email` FOREIGN KEY (`email`) REFERENCES `customers` (`email`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
